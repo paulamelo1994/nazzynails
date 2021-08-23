@@ -1,7 +1,6 @@
 import '../assets/css/App.css';
 
-function App() {
-  return (
+const App = () => (
     <div className="App">
       <header className="App-header">
         <p className="bg-primary">
@@ -17,7 +16,6 @@ function App() {
         </a>
       </header>
     </div>
-  );
-}
+  )
 
 export default App;
