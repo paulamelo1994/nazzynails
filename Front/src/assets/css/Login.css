@@ -1,0 +1,60 @@
+.form__login {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin: 20px auto;
+    width: 80%;
+    height: 70%;
+    max-width: 400px;
+    min-height: 600px;
+    border-radius: 25px;
+}
+
+.form__login,
+.form__login h2 {
+    font-weight: 600;
+}
+
+.form__login input {
+    border-radius: 10px;
+    background: #f2f4f8;
+    font-size: 16px;
+    border: none;
+}
+
+.form__login input::placeholder {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.login__check {
+    margin: 0 auto;
+}
+
+.login__check input:checked {
+    background: #3e21de;
+}
+
+.check-lg {
+    transform: scale(2);
+    margin-right: 20px;
+}
+
+.login__btn {
+    background: var(--main-color);
+    border: none;
+    padding: 10px;
+    border-radius: 25px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    border: 1px solid var(--main-color);
+    transition: all .3s ease-out;
+}
+
+.login__btn:hover {
+    background: #fff;
+    color: var(--main-color);
+    transition: all .2s ease-in;
+}
