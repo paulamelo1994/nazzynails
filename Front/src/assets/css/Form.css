@@ -1,0 +1,86 @@
+.form {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    margin: auto auto;
+    padding: 20px;
+    width: 80%;
+    max-width: 400px;
+    min-width: 300px;
+    border-radius: 25px;
+    border: 1px solid var(--main-color);
+    animation: aparecer .7s ease-in;
+}
+
+@keyframes aparecer {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.form,
+.form h2 {
+    font-weight: 600;
+    color: var(--main-color);
+}
+
+.form input {
+    border-radius: 10px;
+    background: #f2f4f8;
+    font-size: 16px;
+    border: none;
+}
+
+.btn__submit {
+    background: var(--main-color);
+    width: 40%;
+    padding: 10px;
+    border-radius: 25px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    border: 1px solid var(--main-color);
+    transition: all .3s ease-out;
+}
+
+.btn__submit:hover {
+    background: #fff;
+    color: var(--main-color);
+    transition: all .2s ease-in;
+}
+
+.btn__edit {
+    background: lightblue;
+    border: 1px solid lightblue;
+}
+
+.btn__edit:hover {
+    background: #fff;
+    color: lightblue;
+}
+
+.btn__cancel {
+    padding: 10px;
+    background: #fff;
+    width: 40%;
+    color: var(--main-color);
+    border-radius: 25px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 25px;
+    border: 1px solid var(--main-color);
+}
+
+.form input[type=number]::-webkit-inner-spin-button,
+.form input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form input[type=number] {
+    -moz-appearance: textfield;
+}

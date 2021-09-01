@@ -1,0 +1,22 @@
+.agregar {
+    position: fixed;
+    bottom: 20%;
+    right: 20px;
+    color: var(--main-color);
+    transform: scale(1);
+    animation: jump .3s ease-in;
+}
+
+.agregar:hover {
+    color: var(--main-color);
+    opacity: .4;
+}
+
+@keyframes jump {
+    0% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

@@ -2,6 +2,7 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-bottom: 30%;
 }
 
 .header {
@@ -16,4 +17,10 @@
 .header h2 {
     font-weight: 500;
     margin: auto;
+}
+
+@media (min-width: 700px) {
+    .App {
+        padding-bottom: 20px;
+    }
 }
