@@ -1,0 +1,17 @@
+iconos
+
+**citas: <i class="bi bi-calendar-week"></i> -> https://icons.getbootstrap.com/icons/calendar-week/
+
+**Reportes: <i class="bi bi-file-earmark-text"></i> -> https://icons.getbootstrap.com/icons/file-earmark-text/ 
+
+**clientes: <i class="bi bi-people-fill"></i>  -> https://icons.getbootstrap.com/icons/people-fill/
+
+**Servicios: <i class="bi bi-list-stars"></i> -> https://icons.getbootstrap.com/icons/list-stars/
+
+
+**Reloj: <i class="bi bi-clock"></i> -> https://icons.getbootstrap.com/icons/clock/
+
+**Agregar: <i class="bi bi-plus-circle-fill"></i> -> https://icons.getbootstrap.com/icons/plus-circle-fill/
+
+**lapiz: (es un circulo relleno con el ícono del lápiz) <i class="bi bi-pencil"></i> ->https://icons.getbootstrap.com/icons/pencil/
+
