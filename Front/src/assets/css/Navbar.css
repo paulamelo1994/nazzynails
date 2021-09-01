@@ -1,21 +1,25 @@
+@import '~bootstrap-icons/font/bootstrap-icons';
 #menu {
     background: #f6f4f5;
 }
 
 ul li {
-    max-width: 70px;
-    min-width: 30px;
-    text-align: center;
+    margin: 0 20px;
+    opacity: .4;
+}
+
+.icon__active {
+    opacity: 1;
 }
 
 ul li a {
     font-weight: 600;
     color: var(--main-color);
+    text-align: center;
 }
 
-ul li a img {
-    object-fit: cover;
-    width: 100%;
+ul li a i {
+    font-size: 35px;
 }
 
 @media (max-width: 600px) {
