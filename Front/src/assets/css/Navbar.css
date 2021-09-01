@@ -1,0 +1,26 @@
+#menu {
+    background: #f6f4f5;
+}
+
+ul li {
+    max-width: 70px;
+    min-width: 30px;
+    text-align: center;
+}
+
+ul li a {
+    font-weight: 600;
+    color: var(--main-color);
+}
+
+ul li a img {
+    object-fit: cover;
+    width: 100%;
+}
+
+@media (max-width: 600px) {
+    #menu {
+        position: fixed;
+        bottom: 0;
+    }
+}

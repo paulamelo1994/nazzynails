@@ -1,7 +1,5 @@
 .App {
     min-height: 100vh;
     display: flex;
-    align-items: center;
-    position: relative;
-    background: var(--main-color);
+    flex-direction: column;
 }

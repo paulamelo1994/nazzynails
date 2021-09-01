@@ -1,16 +1,21 @@
+import { Switch, Route, useLocation } from 'react-router-dom'
 import '../assets/css/App.css';
-import { Switch, Route } from 'react-router-dom'
 
 import Login from './Login'
+import Navbar from './Navbar';
 
-const App = () => (
-    <div className="App">
+const App = () => {
+  const location = useLocation()
+  const loginPath = location.pathname !== '/login'
+  
+  return <div className="App" style={{background: !loginPath && 'var(--main-color'}}>
+      { loginPath && <Navbar/>}
       <Switch>
         <Route exact path='/login'>
           <Login />
         </Route>
       </Switch>
     </div>
-  )
+}
 
 export default App;
