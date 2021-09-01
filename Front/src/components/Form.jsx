@@ -6,6 +6,7 @@ import '../assets/css/Form.css'
  * la siguiente estructura
  * @input {Object} objeto que se renderizará como un input
  * @name {Object} input.name Nombre del input
+ * @placeholder {Object} input.placeholder Placeholder del input
  * @type {Object} input.type Tipo de input
 */
 class Form extends React.Component{
