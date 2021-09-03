@@ -6,19 +6,19 @@ const Navbar = () => {
     const location = useLocation()
     const Icon = (propsIcon) => (
         <li className={`nav-item ${location.pathname === propsIcon.link && 'icon__active'}`}>
-            <Link to={propsIcon.link} className="nav-link d-flex flex-column" style={{color: 'var(--main-color)'}}>
+            <Link to={propsIcon.link} className="nav-link d-flex flex-column" style={{ color: 'var(--main-color)' }}>
                 <i className={propsIcon.className}></i>
                 <span>{propsIcon.name}</span>
             </Link>
         </li>
     )
-    
+
     return <nav id="menu" className="navbar w-100">
         <ul className="navbar-nav mr-auto mt-lg-0 flex-row justify-content-around  w-100">
-            <Icon className="bi bi-calendar-week" link="/" label="Mis Solicitudes" name="Citas"/>
-            <Icon className="bi bi-file-earmark-text" link="/reportes" label="Mis Reportes" name="Reportes"/>
-            <Icon className="bi bi-people-fill" link="/clientes" label="Mis Clientes" name="Clientes"/>
-            <Icon className="bi bi-list-stars" link="/servicios" label="Mis Servicios" name="Servicios"/>
+            <Icon className="bi bi-calendar-week" link="/" label="Mis Solicitudes" name="Citas" />
+            <Icon className="bi bi-file-earmark-text" link="/reportes" label="Mis Reportes" name="Reportes" />
+            <Icon className="bi bi-people-fill" link="/clientes" label="Mis Clientes" name="Clientes" />
+            <Icon className="bi bi-list-stars" link="/servicios" label="Mis Servicios" name="Servicios" />
         </ul>
     </nav>
 }
