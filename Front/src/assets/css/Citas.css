@@ -1,4 +1,35 @@
-.calendar {
+.citas__calendar {
     display: flex;
     justify-content: center;
+    margin-top: 40px;
+}
+
+.react-calendar{
+    border: none;
+}
+.react-calendar__tile--now {
+    background: #c4f7ff73;
+}
+.react-calendar__month-view__days__day--weekend {
+    color: inherit;
+}
+.react-calendar__tile--active {
+    background: #a64d79 !important;
+    color: white !important;
+}
+button.react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend:hover {
+    background: #e6e6e6;
+}
+
+.react-calendar__month-view__days__day--neighboringMonth {
+    color: #757575 !important;
+}
+
+/*Botones de navegación anual*/
+button.react-calendar__navigation__arrow.react-calendar__navigation__prev2-button {
+    display: none;
+}
+
+button.react-calendar__navigation__arrow.react-calendar__navigation__next2-button {
+    display: none;
 }

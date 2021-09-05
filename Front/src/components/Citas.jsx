@@ -10,9 +10,7 @@ const Citas = () => {
     const [date, setDate] = useState(new Date());
     return (
         <div>
-
-            <p>Soy la pagina de inicio</p>
-            <div className="calendar">
+            <div className="citas__calendar">
                 <Calendar
                     onChange={setDate}
                     value={date}
