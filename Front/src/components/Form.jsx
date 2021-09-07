@@ -9,32 +9,24 @@ import '../assets/css/Form.css'
  * @placeholder {Object} input.placeholder Placeholder del input
  * @type {Object} input.type Tipo de input
 */
-class Form extends React.Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            form: this.props.form || [],
-            data: null
-        }
+const Form = ({ form , goBack}) => {
+    const [dataForm] = React.useState(form || [])
+    const [data, setData] = React.useState(null)
+
+    const handleData = (e) => {
+        setData({...data, [e.target.name]: e.target.value})
     }
 
-    handleData = (e) => {
-        console.log(this.state)
-        this.setState({...this.state.data, [e.target.name]: e.target.value})
-    }
-    render = () => {
-        const { form } = this.state
-        return <form className="form">
-            <h2 className="mb-4">Nuevo Cliente</h2>
-            { form.map((i, key) => (
-                <input key={key} className="form-control p-3 mb-4"  {...i} onChange={this.handleData}/>
-            )) }
-            <div className="form-row d-flex justify-content-evenly">
-                <button type="submit" className="btn__submit">Crear</button>
-                <button type="button" className="btn__cancel" onClick={this.props.goBack}>Cancelar</button>
-            </div>
-        </form>
-    }
+    return <form className="form">
+        <h2 className="mb-4">Nuevo Cliente</h2>
+        { dataForm.map((i, key) => (
+            <input key={key} className="form-control p-3 mb-4"  {...i} onChange={handleData}/>
+        )) }
+        <div className="form-row d-flex justify-content-evenly">
+            <button type="submit" className="btn__submit">Crear</button>
+            <button type="button" className="btn__cancel" onClick={goBack}>Cancelar</button>
+        </div>
+    </form>
 }
 
-export default Form
+export {Form}

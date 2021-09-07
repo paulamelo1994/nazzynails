@@ -22,5 +22,5 @@ const Citas = () => {
 
 }
 
-export default Citas;
+export {Citas};
 

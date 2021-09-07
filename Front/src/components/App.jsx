@@ -2,11 +2,11 @@ import { Switch, Route, useLocation, useHistory } from 'react-router-dom'
 import '../assets/css/App.css';
 import logo from '../assets/icons/nazza-logo.png'
 
-import Login from './Login'
-import Navbar from './Navbar';
-import Citas from './Citas';
-import Form from './Form';
-import Agregar from './Agregar';
+import {Login} from './Login'
+import {Navbar} from './Navbar';
+import {Citas} from './Citas';
+import {Form} from './Form';
+import {Agregar} from './Agregar';
 
 const App = () => {
   const location = useLocation()
@@ -19,6 +19,7 @@ const App = () => {
     '/clientes/nuevo': 'Cliente',
     '/servicios': 'Mis Servicios'
   }
+  
   const Header = () => (
     <header className="header" href="#">
       <img src={logo} alt="logo header" width="80px" />
