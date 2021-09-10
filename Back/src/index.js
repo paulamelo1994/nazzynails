@@ -10,12 +10,15 @@ app.use(cors())
 
 // Coloca el nombre del archivo que contiene sus respectivas rutas
 const routes = [
+    'cliente',
     'cita',
-    'usuario',
-]
+    'usuario'
+];
 
 // Se importan cada una de las rutas
 app.use('/api', routes.map(r => require(`./routes/${r}`)))
 const server = app.listen(
     PORT,
     () => console.log('Servidor iniciado en el puerto', PORT))
+
+module.exports = server
