@@ -76,7 +76,14 @@ function getCurrent(req, res, next) {
 
 function getById(req, res, next) {
     userService.getById(req.params.id)
-        .then(user => res.json(user))
+        .then(user => {
+            res.json({
+                "id": user.id,
+                "firstName": user.firstName,
+                "lastName": user.lastName,
+                "username": user.username
+            })
+        })
         .catch(next);
 }
 
