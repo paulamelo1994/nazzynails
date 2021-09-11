@@ -2,7 +2,6 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding-bottom: 30%;
 }
 
 .header {
@@ -20,7 +19,7 @@
     margin: auto;
 }
 
-@media (min-width: 700px) {
+@media (min-width: 600px) {
     .App {
         padding-bottom: 20px;
     }

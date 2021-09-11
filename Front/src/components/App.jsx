@@ -11,7 +11,7 @@ import {Agregar} from './Agregar';
 const App = () => {
   const location = useLocation()
   const history = useHistory()
-  const loginPath = location.pathname !== '/login'
+  const loginPath = location.pathname === '/login'
   const labels = {
     '/': 'Mis Citas',
     '/reportes': 'Mis Reportes',
@@ -27,9 +27,12 @@ const App = () => {
     </header>
   )
 
-  return <div className="App" style={{ background: !loginPath && 'var(--main-color' }}>
-    {loginPath && <Header />}
-    {loginPath && <Navbar />}
+  return <div className="App" style={{ 
+    background: loginPath && 'var(--main-color)',
+    paddingBottom: !loginPath && '30%'
+    }}>
+    {!loginPath && <Header />}
+    {!loginPath && <Navbar />}
     <Switch>
       <Route exact path='/login'>
         <Login />
