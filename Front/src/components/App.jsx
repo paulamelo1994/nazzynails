@@ -5,8 +5,8 @@ import logo from '../assets/icons/nazza-logo.png'
 import {Login} from './Login'
 import {Navbar} from './Navbar';
 import {Citas} from './Citas';
-import {Form} from './Form';
 import {Agregar} from './Agregar';
+import { FormCliente } from './FormCliente';
 
 
 const App = () => {
@@ -45,13 +45,7 @@ const App = () => {
         <Agregar link='/clientes/nuevo' />
       </Route>
       <Route exact path='/clientes/nuevo'>
-        <Form form={[
-          { name: 'nombre', placeholder: 'Nombre', type: 'text' },
-          { name: 'direccion', placeholder: 'Direccion', type: 'text' },
-          { name: 'correo', placeholder: 'Correo', type: 'email' },
-          { name: 'telefono', placeholder: 'Teléfono', type: 'number' },
-        ]}
-          goBack={history.goBack} />
+        <FormCliente history={history}/>
       </Route>
     </Switch>
   </div>
