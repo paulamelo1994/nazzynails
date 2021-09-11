@@ -23,7 +23,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         nombre: DataTypes.STRING,
         apellido: DataTypes.STRING,
-        ultima_cita: DataTypes.DATE,
+        ultima_cita: {
+            type: DataTypes.DATE,
+            defaultValue: DataTypes.NULL
+        },
         usuarioId: {
             type: DataTypes.INTEGER,
             onDelete: 'CASCADE',

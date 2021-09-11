@@ -13,7 +13,8 @@ module.exports = {
                 type: Sequelize.STRING
             },
             ultima_cita: {
-                type: Sequelize.DATE
+                type: Sequelize.DATE,
+                defaultValue: Sequelize.NULL
             },
             usuarioId: {
                 type: Sequelize.STRING,
