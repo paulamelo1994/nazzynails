@@ -20,6 +20,7 @@ app.use(errorHandler);
 //app.use('/api', routes.map(r => require(`./routes/${r}`)))
 
 app.use('/api/users', require('./controllers/users.controller'));
+app.use('/api/clients', require('./controllers/clients.controller'));
 
 const server = app.listen(
     PORT,
