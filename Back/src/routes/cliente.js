@@ -1,6 +1,5 @@
 const router = require('express').Router()
 const path = 'cliente'
-const models = require('../../models')
 const { Cliente } = models
 
 router.post(`/${path}/`, async(req, res) => {
