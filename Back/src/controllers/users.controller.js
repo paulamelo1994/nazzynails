@@ -4,7 +4,6 @@ const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const authorize = require('../_middleware/authorize')
 const userService = require('../services/user.service');
-const { json } = require('body-parser');
 
 // routes
 router.post('/authenticate', authenticateSchema, authenticate);
@@ -56,18 +55,18 @@ function register(req, res, next) {
 }
 
 function getAll(req, res, next) {
+    var data = []
     userService.getAll()
-        .then(users => res.json(
-            users.forEach(user => res.json({
+        .then(users => {
+            users.forEach(user => {
+                data.push({ 
                     "id": user.id,
                     "firstName": user.firstName,
                     "lastName": user.lastName,
-                    "id": user.id,
-                    "token": user.token
-                
-              }))
-            
-        ))
+                    "username": user.username
+                })
+            });
+            res.json(data);})
         .catch(next);
 }
 
