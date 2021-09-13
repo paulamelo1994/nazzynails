@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
-const { param } = require('../controllers/clients.controller');
+const { param } = require('../controllers/services.controller');
 
 module.exports = {
     getAll,
@@ -13,7 +13,7 @@ module.exports = {
 };
 
 async function getAll(user) {
-    return await db.Client.findAll({
+    return await db.Service.findAll({
         where: {
           userId: user.id
         }
@@ -21,47 +21,47 @@ async function getAll(user) {
 }
 
 async function getById(user, id) {
-    client = await db.Client.findOne({
+    service = await db.Service.findOne({
         where: {
           id: id,
           userId: user.id
         },
       });
-    if (!client) throw 'Client not found';
-    return await client;
+    if (!service) throw 'Service not found';
+    return await service;
 }
 
 async function create(user, params) {
     params.userId = user.id;
-    await db.Client.create(params);
+    await db.Service.create(params);
 }
 
 async function update(user, id, params) {
-    client = await db.Client.findOne({
+    service = await db.Service.findOne({
         where: {
           id: id,
           userId: user.id
         },
       });
-    if (!client) throw 'Client not found';
-    Object.assign(client, params);
-    await client.save();
-    return client.get();
+    if (!service) throw 'Service not found';
+    Object.assign(service, params);
+    await service.save();
+    return service.get();
 }
 
 async function _delete(user, id) {
-    client = await db.Client.findOne({
+    service = await db.Service.findOne({
         where: {
           id: id,
           userId: user.id
         },
       });
-    if (!client) throw 'Client not found';
-    await client.destroy();
+    if (!service) throw 'Service not found';
+    await service.destroy();
 }
 
-async function getClient(id) {
-    const client = await db.Client.findByPk(id);
-    if (!client) throw 'Client not found';
-    return client;
+async function getService(id) {
+    const service = await db.Service.findByPk(id);
+    if (!service) throw 'Service not found';
+    return service;
 }

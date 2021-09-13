@@ -21,6 +21,7 @@ app.use(errorHandler);
 
 app.use('/api/users', require('./controllers/users.controller'));
 app.use('/api/clients', require('./controllers/clients.controller'));
+app.use('/api/services', require('./controllers/services.controller'));
 
 const server = app.listen(
     PORT,

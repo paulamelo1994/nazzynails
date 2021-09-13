@@ -6,10 +6,10 @@ function model(sequelize) {
     const attributes = {
         userId: { type: DataTypes.INTEGER, allowNull: false},
         name: { type: DataTypes.STRING, allowNull: false },
-        address: { type: DataTypes.STRING, allowNull: false },
-        email: { type: DataTypes.STRING, allowNull: false },
-        phoneNumber: { type: DataTypes.STRING, allowNull: false }
+        length: { type: DataTypes.INTEGER, allowNull: false },
+        enable: { type: DataTypes.BOOLEAN, allowNull: false },
+        price: { type: DataTypes.INTEGER, allowNull: false }
     };
 
-    return sequelize.define('Client', attributes);
+    return sequelize.define('Service', attributes);
 }
