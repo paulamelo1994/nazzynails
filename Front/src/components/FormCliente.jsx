@@ -18,7 +18,7 @@ const FormCliente = ({ history }) => {
             options: {
                 required: "Este campo es requerido",
                 pattern: {
-                    value: /^([A-Z][a-z]+[\s]*)+$/,
+                    value: /^([A-záéíóúñÑÁÉÍÓÚ]+[\s]*)+$/,
                     message: "Ingrese un nombre valido."
                 }
             }
@@ -31,7 +31,13 @@ const FormCliente = ({ history }) => {
         {
             name: 'correo',
             placeholder: 'Correo',
-            type: 'email'
+            type: 'email',
+            options: {
+                pattern: {
+                    value: /^\S+@\S+\.\S+$/,
+                    message: "Ingrese un correo valido."
+                }
+            }
         }
     ]
 
