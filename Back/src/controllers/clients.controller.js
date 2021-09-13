@@ -6,7 +6,7 @@ const authorize = require('../_middleware/authorize')
 const clientService = require('../services/client.service');
 
 // routes
-router.post('/create', newClientSchema, newClient);
+router.post('/create', authorize(), newClientSchema, newClient);
 router.get('/', authorize(), getAll);
 router.get('/:id', authorize(), getById);
 router.put('/:id', authorize(), updateSchema, update);
@@ -25,14 +25,14 @@ function newClientSchema(req, res, next) {
 }
 
 function newClient(req, res, next) {
-    clientService.create(req.body)
-        .then(() => res.json({ message: 'Client created successful' }))
+    clientService.create(req.user, req.body)
+        .then(() => res.json({message: 'Client created successful' }))
         .catch(next);
 }
 
 function getAll(req, res, next) {
     var data = []
-    clientService.getAll()
+    clientService.getAll(req.user)
         .then(clients => {
             clients.forEach(client => {
                 data.push({ 
@@ -48,7 +48,7 @@ function getAll(req, res, next) {
 }
 
 function getById(req, res, next) {
-    clientService.getById(req.params.id)
+    clientService.getById(req.user, req.params.id)
         .then(client => {
             res.json({
                 "id": client.id,
@@ -72,7 +72,7 @@ function updateSchema(req, res, next) {
 }
 
 function update(req, res, next) {
-    clientService.update(req.params.id, req.body)
+    clientService.update(req.user, req.params.id, req.body)
         .then(client => res.json({
             "id": client.id,
             "name": client.name,
@@ -84,7 +84,7 @@ function update(req, res, next) {
 }
 
 function _delete(req, res, next) {
-    clientService.delete(req.params.id)
+    clientService.delete(req.user, req.params.id)
         .then(() => res.json({ message: 'Client deleted successfully' }))
         .catch(next);
 }
