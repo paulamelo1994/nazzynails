@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import '../assets/css/Login.css'
 import logo from '../assets/icons/logo.png'
+import { AppContext } from '../AppContext'
+import { API } from '../ApiProvider'
+
 const Login = () => {
     const [data, setData] = useState({
         username: '',
@@ -8,7 +11,8 @@ const Login = () => {
     })
     const [load, setLoad] = useState(false)
     const [error, setError] = useState('')
-
+    const { token, setToken } = React.useContext(AppContext)
+    
     const handleInputChange = (e) => {
         setData({
             ...data,
@@ -18,8 +22,10 @@ const Login = () => {
     const auth = (e) => {
         e.preventDefault()
         try {
-            //POST A API
             setLoad(true)
+            //POST A API
+            console.log(API.CLIENTS)
+            setToken('SOY_EL_TOKEN')
             console.log(data)
         } catch (error) {
             setLoad(false)
@@ -52,7 +58,7 @@ const Login = () => {
             <input className="form-check-input check-lg" type="checkbox" id="session" defaultChecked={true}/>
             <label className="form-check-label" htmlFor="session">Mantener mi sesión iniciada</label>
         </div>
-        <button className="login__btn w-100" type="submit">{load ? 'load' :'Entrar'}</button>
+        <button className="login__btn w-100" type="submit">{load ? token : 'Entrar'}</button>
     </form>
 }
 
