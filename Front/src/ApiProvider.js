@@ -1,4 +1,7 @@
-const URL = "http://localhost:5000/api"
+import dotenv from 'dotenv'
+dotenv.config()
+
+const URL = process.env.API
 
 const API = {
     CLIENTS: 'clients/'

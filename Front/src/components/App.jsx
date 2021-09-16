@@ -7,6 +7,7 @@ import {Navbar} from './Navbar';
 import {Citas} from './Citas';
 import {Agregar} from './Agregar';
 import { FormCliente } from './FormCliente';
+import { ClienteList } from './ClienteList';
 
 
 const App = () => {
@@ -30,24 +31,34 @@ const App = () => {
 
   return <div className="App" style={{ 
     background: loginPath && 'var(--main-color)',
-    paddingBottom: !loginPath && '30%'
+    paddingBottom: !loginPath && '35%'
     }}>
     {!loginPath && <Header />}
     {!loginPath && <Navbar />}
-    <Switch>
-      <Route exact path='/login'>
-        <Login />
-      </Route>
-      <Route exact path='/'>
-        <Citas />
-      </Route>
-      <Route exact path='/clientes'>
-        <Agregar link='/clientes/nuevo' />
-      </Route>
-      <Route exact path='/clientes/nuevo'>
-        <FormCliente history={history}/>
-      </Route>
-    </Switch>
+    <div className="container">
+      <Switch>
+        <Route exact path='/login'>
+          <Login />
+        </Route>
+        <Route exact path='/'>
+          <Citas />
+        </Route>
+        <Route exact path='/clientes'>
+          <ClienteList />
+          <Agregar link='/clientes/nuevo' 
+          style={{
+            position: 'fixed', 
+            bottom: '20%',
+            right: '10%',
+            fontSize: '60px',
+            background: '#fff'
+          }} />
+        </Route>
+        <Route exact path='/clientes/nuevo'>
+          <FormCliente history={history}/>
+        </Route>
+      </Switch>
+    </div>
   </div>
 }
 
