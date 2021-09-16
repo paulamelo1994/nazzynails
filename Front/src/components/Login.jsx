@@ -3,7 +3,8 @@ import '../assets/css/Login.css'
 import logo from '../assets/icons/logo.png'
 import { AppContext } from '../AppContext'
 import { API } from '../ApiProvider'
-
+import axios from 'axios'
+import { Redirect } from 'react-router-dom'
 const Login = () => {
     const [data, setData] = useState({
         username: '',
@@ -11,7 +12,7 @@ const Login = () => {
     })
     const [load, setLoad] = useState(false)
     const [error, setError] = useState('')
-    const { token, setToken } = React.useContext(AppContext)
+    const { token, createCookie } = React.useContext(AppContext)
     
     const handleInputChange = (e) => {
         setData({
@@ -19,24 +20,25 @@ const Login = () => {
             [e.target.id]: e.target.value
         })
     }
-    const auth = (e) => {
+    const auth = async (e) => {
+        const { USERS_AUTH } = API
         e.preventDefault()
+        setLoad(true)
         try {
-            setLoad(true)
-            //POST A API
-            console.log(API.CLIENTS)
-            setToken('SOY_EL_TOKEN')
-            console.log(data)
+            const response = await axios.post(USERS_AUTH, data)
+            console.log(response)
+            createCookie(response.data.token)
         } catch (error) {
-            setLoad(false)
-            setError(error)
+            setError(error.message)
+            console.log(error.message)
         }
+        setLoad(false)
     }
 
     if(error){
         return <p>Error - {error}</p>
     }
-
+    
     return <form className="form__login text-center p-4" onSubmit={auth}>
         <img className="mw-50 m-0 mx-auto" src={logo} alt="Logo nazzynails" />
         <h2>Ingresar</h2>
@@ -59,6 +61,7 @@ const Login = () => {
             <label className="form-check-label" htmlFor="session">Mantener mi sesión iniciada</label>
         </div>
         <button className="login__btn w-100" type="submit">{load ? token : 'Entrar'}</button>
+        { token && <Redirect to="/" /> }
     </form>
 }
 

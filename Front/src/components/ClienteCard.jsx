@@ -8,7 +8,7 @@ const ClienteCard = () => {
             <ul className="p-0 d-flex align-items-center justify-content-between">
                 <h4 style={{color: 'var(--main-color)'}}>Juan Carlos Ballesteros Romero</h4>
                 <a href="#" className="cliente__card-telefono">
-                    <i class="bi bi-whatsapp"> </i>3126846268
+                    <i className="bi bi-whatsapp"> </i>3126846268
                 </a>
             </ul>
             <ul className="p-0 d-flex justify-content-between">

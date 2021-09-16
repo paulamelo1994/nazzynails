@@ -3,7 +3,7 @@ import {Form} from './Form';
 
 const FormCliente = ({ history }) => {
     const form = [{
-            name: 'telefono',
+            name: 'phoneNumber',
             placeholder: 'Teléfono',
             type: 'number',
             options: {
@@ -12,7 +12,7 @@ const FormCliente = ({ history }) => {
             }
         },
         {
-            name: 'nombre',
+            name: 'name',
             placeholder: 'Nombre',
             type: 'text',
             options: {
@@ -24,12 +24,12 @@ const FormCliente = ({ history }) => {
             }
         },
         {
-            name: 'direccion',
+            name: 'address',
             placeholder: 'Direccion',
             type: 'text'
         },
         {
-            name: 'correo',
+            name: 'email',
             placeholder: 'Correo',
             type: 'email',
             options: {

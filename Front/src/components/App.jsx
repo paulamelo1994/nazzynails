@@ -1,6 +1,8 @@
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom'
+import React from 'react';
+import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-dom'
 import '../assets/css/App.css';
 import logo from '../assets/icons/nazza-logo.png'
+import { AppContext } from '../AppContext'
 
 import {Login} from './Login'
 import {Navbar} from './Navbar';
@@ -9,10 +11,10 @@ import {Agregar} from './Agregar';
 import { FormCliente } from './FormCliente';
 import { ClienteList } from './ClienteList';
 
-
 const App = () => {
   const location = useLocation()
   const history = useHistory()
+  const { token } = React.useContext(AppContext)
   const loginPath = location.pathname === '/login'
   const labels = {
     '/': 'Mis Citas',
@@ -28,11 +30,11 @@ const App = () => {
       <h2 className="display-6">{labels[location.pathname]}</h2>
     </header>
   )
-
+  
   return <div className="App" style={{ 
     background: loginPath && 'var(--main-color)',
     paddingBottom: !loginPath && '35%'
-    }}>
+  }}>
     {!loginPath && <Header />}
     {!loginPath && <Navbar />}
     <div className="container">
@@ -59,6 +61,7 @@ const App = () => {
         </Route>
       </Switch>
     </div>
+    { !token && <Redirect to="/login" />}
   </div>
 }
 

@@ -1,10 +1,11 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
-const URL = process.env.API
+require('dotenv').config({ path: '../.env' })
+const URL = process.env.API || 'http://localhost:5000/api'
 
 const API = {
-    CLIENTS: 'clients/'
+    USERS: 'users/',
+    USERS_AUTH: 'users/authenticate/',
+    CLIENTS: 'clients/',
+    CLIENTS_NEW: 'clients/create/'
 }
 
 Object.keys(API).map(key => API[key] = `${URL}/${API[key]}`)

@@ -1,6 +1,9 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import '../assets/css/Form.css'
+import { AppContext } from '../AppContext';
+import axios from 'axios'
+import { API } from '../ApiProvider.js' 
 
 /**
  * @form es un arreglo que contiene objetos con
@@ -13,6 +16,9 @@ import '../assets/css/Form.css'
 */
 const Form = ({ form , goBack}) => {
     const [dataForm] = React.useState(form || [])
+    const [loading, setLoading] = React.useState(false)
+    const [error, setError] = React.useState('')
+    const { token, setToken } = React.useContext(AppContext)
     const {
         register, 
         formState: {errors}, 
@@ -20,7 +26,23 @@ const Form = ({ form , goBack}) => {
         setValue
     } = useForm()
 
-    const onSubmit = data => {
+    const onSubmit = async data => {
+        console.log(data)
+        data.phoneNumber = data.phoneNumber.toString()
+        const { CLIENTS_NEW } = API
+        const headers = {
+            Authorization: `Bearer ${token}`
+        }
+
+        setLoading(true)
+        try {
+            const response = await axios.post(CLIENTS_NEW, data, { headers }) 
+            console.log(response)
+        } catch (error) {
+            console.log(error.message)
+            setError(error.message)
+        }
+        setLoading(false)
         setValue('nombre', 'Enviado')
     }
 
