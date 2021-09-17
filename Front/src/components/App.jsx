@@ -10,11 +10,12 @@ import {Citas} from './Citas';
 import { ButtonAction } from './ButtonAction';
 import { FormCliente } from './FormCliente';
 import { ClienteList } from './ClienteList';
+import { Toast } from './Toast';
 
 const App = () => {
   const location = useLocation()
   const history = useHistory()
-  const { token } = React.useContext(AppContext)
+  const { token, toast } = React.useContext(AppContext)
   const loginPath = location.pathname === '/login'
   const labels = {
     '/': 'Mis Citas',
@@ -37,7 +38,8 @@ const App = () => {
   }}>
     {!loginPath && <Header />}
     {!loginPath && <Navbar />}
-    <div className="container">
+    <div className="container d-flex justify-content-center">
+      {toast.message && <Toast />}
       <Switch>
         <Route exact path='/login'>
           <Login />

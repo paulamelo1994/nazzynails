@@ -10,14 +10,25 @@ function useQuery() {
 function AppProvider({ children }){
     const cookies = new Cookies()
     const [token, setToken] = React.useState(cookies.get('token'))
+    const [toast, setToast] = React.useState({
+        message: '',
+        tipo: ''
+    })
     
     const createCookie = (token) => {
         cookies.set("token", token, { path: "/" , sameSite: true, secure: true})
     }
+    React.useEffect(() => {
+        if(toast.message){
+            setTimeout(() => setToast({...toast, message:'' }), 3000)
+        }
+    })
     return <AppContext.Provider value={{
         token,
         setToken,
-        createCookie
+        createCookie,
+        toast,
+        setToast
     }}>
         {children}
     </AppContext.Provider>

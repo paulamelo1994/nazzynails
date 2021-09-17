@@ -1,5 +1,6 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
+import { AppContext } from '../AppContext';
 import '../assets/css/Form.css'
 
 /**
@@ -11,10 +12,11 @@ import '../assets/css/Form.css'
  * @type {Object} input.type Tipo de input
  * @options {Object} input.options es un objeto que contiene los attr de useForm
 */
-const Form = ({ form , goBack, endpoint}) => {
+const Form = ({ form , goBack, endpoint, submit, messageSubmit}) => {
     const [dataForm, setDataForm] = React.useState(form || [])
     const [loading, setLoading] = React.useState(false)
     const [error, setError] = React.useState('')
+    const { setToast } = React.useContext(AppContext)
     const {
         register, 
         formState: {errors}, 
@@ -37,6 +39,7 @@ const Form = ({ form , goBack, endpoint}) => {
             setError(error.message)
         }
         setLoading(false)
+        setToast({message: messageSubmit, tipo: 'CREAR'})
         goBack()
     }
     if (error){
@@ -61,7 +64,7 @@ const Form = ({ form , goBack, endpoint}) => {
             </div>
         )) }
         <div className="form-row d-flex justify-content-evenly">
-            <button type="submit" className="btn__submit">Crear</button>
+            <button type="submit" className="btn__submit">{submit}</button>
             <button type="button" className="btn__cancel" onClick={goBack}>Cancelar</button>
         </div>
     </form>

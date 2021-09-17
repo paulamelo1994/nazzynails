@@ -1,4 +1,4 @@
-.agregar {
+.button_action {
     color: var(--main-color);
     display: flex;
     justify-content: center;
@@ -10,7 +10,7 @@
     animation: jump .3s ease-in;
 }
 
-.agregar:hover {
+.button_action:hover {
     color: var(--main-color);
     opacity: .4;
 }

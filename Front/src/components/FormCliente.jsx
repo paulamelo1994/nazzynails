@@ -52,9 +52,13 @@ const FormCliente = ({ history }) => {
     
     return id
     ? <Form form={ formUpdate } 
+    submit='Actualizar'
+    messageSubmit='Cliente Actualizado'
     goBack={history.goBack} 
     endpoint={(data) => axios.put(CLIENTS + id , data, { headers }) }/> 
-    : <Form form={ form } 
+    : <Form form={ form }
+    submit='Crear' 
+    messageSubmit='Creado Exitosamente'
     goBack={history.goBack}
     endpoint={(data) => axios.post(CLIENTS_NEW, data, { headers }) }/> 
 }
