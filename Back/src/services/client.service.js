@@ -27,7 +27,7 @@ async function getById(user, id) {
           userId: user.id
         },
       });
-    if (!client) throw 'Client not found';
+    if (!client) {throw 'Client not found';}
     return await client;
 }
 
