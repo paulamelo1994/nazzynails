@@ -18,8 +18,7 @@ function newAppointmentSchema(req, res, next) {
     const schema = Joi.object({
         clientId: Joi.number().integer().required(),
         time: Joi.date().required(),
-        serviceList: Joi.array().items(Joi.number().integer()),
-        appointmentIsDone: Joi.bool().required()
+        serviceList: Joi.array().items(Joi.number().integer())
     });
     validateRequest(req, next, schema);
 }

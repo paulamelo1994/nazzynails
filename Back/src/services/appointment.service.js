@@ -64,6 +64,7 @@ async function getById(user, id) {
 
 async function create(user, params) {
     params.userId = user.id;
+    params.appointmentIsDone = false;
 
     searchClient = await db.Client.findOne({
       where: {
