@@ -1,9 +1,6 @@
 import React from 'react'
 import { useForm } from "react-hook-form";
 import '../assets/css/Form.css'
-import { AppContext } from '../AppContext';
-import axios from 'axios'
-import { API } from '../ApiProvider.js' 
 
 /**
  * @form es un arreglo que contiene objetos con
@@ -14,38 +11,40 @@ import { API } from '../ApiProvider.js'
  * @type {Object} input.type Tipo de input
  * @options {Object} input.options es un objeto que contiene los attr de useForm
 */
-const Form = ({ form , goBack}) => {
-    const [dataForm] = React.useState(form || [])
+const Form = ({ form , goBack, endpoint}) => {
+    const [dataForm, setDataForm] = React.useState(form || [])
     const [loading, setLoading] = React.useState(false)
     const [error, setError] = React.useState('')
-    const { token, setToken } = React.useContext(AppContext)
     const {
         register, 
         formState: {errors}, 
         handleSubmit,
-        setValue
     } = useForm()
-
+    
     const onSubmit = async data => {
-        console.log(data)
+        console.log(form)
+        setDataForm([])
+        setDataForm(form)
+        
         data.phoneNumber = data.phoneNumber.toString()
-        const { CLIENTS_NEW } = API
-        const headers = {
-            Authorization: `Bearer ${token}`
-        }
-
+        
         setLoading(true)
         try {
-            const response = await axios.post(CLIENTS_NEW, data, { headers }) 
+            const response = await endpoint(data)
             console.log(response)
         } catch (error) {
             console.log(error.message)
             setError(error.message)
         }
         setLoading(false)
-        setValue('nombre', 'Enviado')
+        goBack()
     }
-
+    if (error){
+        return <p>error</p>
+    }
+    if(loading){
+        return <p>Cargando...</p>
+    }
     return <form className="form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <h2 className="mb-4">Nuevo Cliente</h2>
         { dataForm.map((i, key) => (

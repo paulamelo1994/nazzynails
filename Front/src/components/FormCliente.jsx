@@ -1,47 +1,62 @@
 import React from "react";
 import {Form} from './Form';
+import { form } from '../InputCliente.js'
+import { useQuery, AppContext } from "../AppContext";
+import { API } from '../ApiProvider'
+import axios from "axios";
 
 const FormCliente = ({ history }) => {
-    const form = [{
-            name: 'phoneNumber',
-            placeholder: 'Teléfono',
-            type: 'number',
-            options: {
-                required: "Este campo es requerido",
-                valueAsNumber: "Escriba un numero de télefono valido"
-            }
-        },
-        {
-            name: 'name',
-            placeholder: 'Nombre',
-            type: 'text',
-            options: {
-                required: "Este campo es requerido",
-                pattern: {
-                    value: /^([A-záéíóúñÑÁÉÍÓÚ]+[\s]*)+$/,
-                    message: "Ingrese un nombre valido."
+    const [formUpdate, setFormUpdate] = React.useState([])
+    const [loading, setLoading] = React.useState(true)
+    const { token } = React.useContext(AppContext)
+    const query = useQuery()
+    const id = query.get('id')
+    const { CLIENTS_NEW } = API
+    const { CLIENTS } = API
+    const headers = {
+        Authorization: `Bearer ${token}`
+    }  
+    
+    React.useEffect(()=> {
+        const getData = async () => {
+            const { CLIENTS } = API
+            const headers = {
+                Authorization: `Bearer ${token}`
+            }  
+            setLoading(true)
+            try {
+                const response = await axios.get(CLIENTS + id, { headers })
+                for (let element of form) {
+                    formUpdate.push({ 
+                            ...element,
+                            options: { 
+                                ...element.options, 
+                                value: response.data[element.name]
+                            }
+                        })             
                 }
+                setFormUpdate(formUpdate)
+            } catch (error) {
+                console.log(error.message)
             }
-        },
-        {
-            name: 'address',
-            placeholder: 'Direccion',
-            type: 'text'
-        },
-        {
-            name: 'email',
-            placeholder: 'Correo',
-            type: 'email',
-            options: {
-                pattern: {
-                    value: /^\S+@\S+\.\S+$/,
-                    message: "Ingrese un correo valido."
-                }
-            }
+            setLoading(false)
         }
-    ]
+        if(id !== null){
+            getData()
+        }
+    }, [token, formUpdate, id])
 
-    return  <Form form={form} goBack={history.goBack}/>
+    if (loading){
+        <p>Cargando</p>
+    }
+    
+    return id
+    ? <Form form={ formUpdate } 
+    goBack={history.goBack} 
+    endpoint={(data) => axios.put(CLIENTS + id , data, { headers }) }/> 
+    : <Form form={ form } 
+    goBack={history.goBack}
+    endpoint={(data) => axios.post(CLIENTS_NEW, data, { headers }) }/> 
 }
 
 export { FormCliente }

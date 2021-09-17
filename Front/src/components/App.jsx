@@ -56,7 +56,7 @@ const App = () => {
             background: '#fff'
           }} />
         </Route>
-        <Route exact path='/clientes/nuevo'>
+        <Route exact path='/clientes/nuevo/'>
           <FormCliente history={history}/>
         </Route>
       </Switch>
