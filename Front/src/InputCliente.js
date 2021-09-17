@@ -1,10 +1,13 @@
 const formClient = [{
         name: 'phoneNumber',
         placeholder: 'Teléfono',
-        type: 'number',
+        type: 'text',
         options: {
             required: "Este campo es requerido",
-            valueAsNumber: "Escriba un numero de télefono valido"
+            pattern: {
+                value: /^([0-9]*)$/,
+                message: "Ingrese un número valido"
+            }
         }
     },
     {

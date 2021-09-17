@@ -11,8 +11,7 @@ const Login = () => {
         password: ''
     })
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
-    const { token, createCookie } = React.useContext(AppContext)
+    const { token, createCookie, setToast, tipoToast } = React.useContext(AppContext)
     
     const handleInputChange = (e) => {
         setData({
@@ -26,17 +25,14 @@ const Login = () => {
         setLoading(true)
         try {
             const response = await axios.post(USERS_AUTH, data)
-            console.log(response)
             createCookie(response.data.token)
         } catch (error) {
-            setError(error.response?.data || error.message)
-            console.log(error.data)
+            setToast({ 
+                message: error.response?.data || error.message,
+                tipo: tipoToast.ERROR
+            })
         }
         setLoading(false)
-    }
-
-    if(error){
-        return <p>Error - {error}</p>
     }
 
     if(token){
@@ -52,13 +48,15 @@ const Login = () => {
             id="username" 
             value={data.username}
             onChange={handleInputChange} 
-            placeholder="Username o número telefónico" />
+            placeholder="Username o número telefónico" 
+            required={true}/>
             <input className="form-control p-3" 
             type="password" 
             id="password" 
             value={data.password} 
             onChange={handleInputChange} 
-            placeholder="Contraseña"/>
+            placeholder="Contraseña"
+            required={true}/>
         </div>
         <div className="form-check login__check">
             <input className="form-check-input check-lg" type="checkbox" id="session" defaultChecked={true}/>

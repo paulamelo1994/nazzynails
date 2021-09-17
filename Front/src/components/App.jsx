@@ -40,10 +40,10 @@ const App = () => {
     background: loginPath && 'var(--main-color)',
     paddingBottom: !loginPath && '35%'
   }}>
+    {toast.message && <Toast />}
     {!loginPath && <Header />}
     {!loginPath && <Navbar />}
     <div className="container" style={{margin: 'auto', display: 'flex',justifyContent: 'center'}}>
-      {toast.message && <Toast />}
       <Switch>
         <Route exact path='/login'>
           <Login />

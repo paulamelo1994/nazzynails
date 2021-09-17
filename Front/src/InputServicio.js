@@ -1,20 +1,25 @@
 const toFormat = (number) => {
     const formatter = new Intl.NumberFormat("en-ES", {
         style: "currency",
-        currency: "USD"
+        currency: "COP"
     });
-
+    if (number < 0) {
+        number = 0
+    }
     return formatter.format(number | 0);
 }
 
 const toTime = (time) => {
-    if (time !== String) {
-        time = "0"
-    }
-    while (time.length < 6) {
+    !time && (time = "0")
+    time = time.toString()
+    while (time.length < 6 && time.length > 0) {
         time = '0' + time
     }
-    return String(`${time.slice(0, 2)} : ${time.slice(2, 4)} : ${time.slice(4, 6)}`)
+    try {
+        return `${time.slice(0, 2)} : ${time.slice(2, 4)} : ${time.slice(4, 6)}`
+    } catch {
+        return "0"
+    }
 }
 const formServicio = [{
         name: 'name',
@@ -32,23 +37,30 @@ const formServicio = [{
         options: {
             required: "Este campo es requerido",
             valueAsNumber: "Escriba un numero de télefono valido",
-            maxLength: {
-                value: 8,
-                message: 'Demasiado dinero'
+            pattern: {
+                value: /^[0-9]$/,
+                message: "Ingrese un nombre valido."
             }
         }
     },
     {
         name: 'time',
-        placeholder: 'Tiempo',
+        placeholder: 'Duración',
         type: 'number',
         format: toTime,
         options: {
             required: "Este campo es requerido",
             valueAsNumber: "Escriba un numero de télefono valido",
-            value: ""
         }
 
+    },
+    {
+        name: 'active',
+        placeholder: 'Activo',
+        type: 'checkbox',
+        options: {
+            value: true
+        }
     }
 ]
 export { formServicio }

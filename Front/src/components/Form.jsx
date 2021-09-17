@@ -9,12 +9,12 @@ const Form = ({ history, form, pathNew, pathUpdate, title}) => {
     const id = query.get('id')
     const [formUpdate, setFormUpdate] = React.useState([])
     const [loading, setLoading] = React.useState(id!==null)
-    const { token } = React.useContext(AppContext)
-    const headers = {
-        Authorization: `Bearer ${token}`
-    }  
-    
-    React.useEffect(()=> {
+    const { token, setToast, tipoToast} = React.useContext(AppContext)
+        const headers = {
+            Authorization: `Bearer ${token}`
+        }  
+        
+        React.useEffect(()=> {
         const getData = async () => {
             const headers = {
                 Authorization: `Bearer ${token}`
@@ -33,14 +33,17 @@ const Form = ({ history, form, pathNew, pathUpdate, title}) => {
                 }
                 setFormUpdate(formUpdate)
             } catch (error) {
-                console.log(error.message)
+                setToast({ 
+                    message: error.response?.data || error.message,
+                    tipo: tipoToast.ERROR
+                })
             }
             setLoading(false)
         }
         if(id !== null){
             getData()
         }
-    }, [token, formUpdate, id, form, pathUpdate])
+    }, [token, setToast, tipoToast, formUpdate, id, form, pathUpdate])
 
     if (loading){
         return <Loader />

@@ -12,6 +12,7 @@ import { Loader } from './Loader';
  * @placeholder {Object} input.placeholder Placeholder del input
  * @type {Object} input.type Tipo de input
  * @options {Object} input.options es un objeto que contiene los attr de useForm
+ * @format {function} input.format es una funcion para alterar el formato del input
 */
 const FormUI = ({ form , 
     goBack, 
@@ -22,7 +23,6 @@ const FormUI = ({ form ,
 }) => {
     const [dataForm] = React.useState(form || [])
     const [loading, setLoading] = React.useState(false)
-    const [error, setError] = React.useState('')
     const { setToast, tipoToast } = React.useContext(AppContext)
     const {
         register, 
@@ -34,9 +34,9 @@ const FormUI = ({ form ,
     const IsolateReRender= ({format, name, defaultValue, control}) => {
         const input = useWatch({
             control,
-            name: name, // without supply name will watch the entire form, or ['firstName', 'lastName'] to watch both
-            defaultValue: defaultValue // default value before the render
-          })
+            name: name, 
+            defaultValue: defaultValue 
+        })
 
         return  <div className="input-group-prepend">
             <span className="input-group-text h-100" id="basic-addon2">{format(input)}</span>
@@ -54,14 +54,14 @@ const FormUI = ({ form ,
             })
             goBack()
         } catch (error) {
-            console.log(error.message)
-            setError(error.message)
+            setToast({ 
+                message: error.response?.data || error.message,
+                tipo: tipoToast.ERROR
+            })
         }
         setLoading(false)
     }
-    if (error){
-        return <p>error</p>
-    }
+
     if(loading){
         return <Loader />
     }
@@ -69,13 +69,20 @@ const FormUI = ({ form ,
         <h2 className="mb-4">{title}</h2>
         { dataForm.map((i, key) => {
             return <div key={key} className='form-group mb-4'>
-                <div className={`${i.format && 'input-group w-100'}`}>
-                    <input className="form-control p-3 border-maroon"
-                    style={{boxShadow: errors[i.name] && ' 0 0 0 0.25rem lightcoral'}} 
-                    placeholder={i.placeholder}
-                    type={i.type}
-                    {...i}
-                    {...register(i.name, i.options)}/>
+                <div className={`${i.format ? 'input-group w-100' : ''}`}>
+                    {i.type === 'checkbox' 
+                    ? <div className="form-check d-flex justify-content-evenly">
+                        <input className="form-check-input check-lg" 
+                        type="checkbox" id={i.name} 
+                        {...register(i.name, i.options)}/>
+                        <label className="form-check-label" htmlFor={i.name}>{i.placeholder}</label>
+                    </div>
+                    : <input className="form-control p-3 border-maroon"
+                        style={{boxShadow: errors[i.name] && ' 0 0 0 0.25rem lightcoral'}} 
+                        placeholder={i.placeholder}
+                        type={i.type}
+                        {...register(i.name, i.options)}/>
+                    }
                     {i.format && <IsolateReRender defaultValue={i.options.value} format={i.format} name={i.name} control={control} />}
                 </div>
                 {errors[i.name] && 
@@ -86,8 +93,8 @@ const FormUI = ({ form ,
             </div>
             }) }
         <div className="form-row d-flex justify-content-evenly">
-            <button type="submit" className="btn__submit">{submit}</button>
             <button type="button" className="btn__cancel" onClick={goBack}>Cancelar</button>
+            <button type="submit" className="btn__submit">{submit}</button>
         </div>
     </form>
 }

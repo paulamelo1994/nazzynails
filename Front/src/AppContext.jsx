@@ -10,9 +10,9 @@ function useQuery() {
 function AppProvider({ children }){
     const cookies = new Cookies()
     const tipoToast = {
-        CREAR : 'crear',
-        WARNING: 'precaucion',
-        ERROR: 'error'
+        CREAR : 'green',
+        WARNING: 'ligthyellow',
+        ERROR: 'red'
     }
     const [token, setToken] = React.useState(cookies.get('token'))
     const [toast, setToast] = React.useState({
