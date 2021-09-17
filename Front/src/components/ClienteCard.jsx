@@ -24,7 +24,7 @@ const ClienteCard = ({ nombre, apellido, telefono, id }) => {
                 background: 'var(--main-color)', 
                 color: '#fff', 
                 fontSize: '30px'}}
-                link={`clientes/nuevo?id=${id}`}
+                link={`clientes/form?id=${id}`}
                 />
         </div>
         <h5 className="text-center mt-1 mb-1 p-1"><strong>Último(s) servicio(s)</strong></h5>

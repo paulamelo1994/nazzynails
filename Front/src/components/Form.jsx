@@ -4,7 +4,7 @@ import { useQuery, AppContext } from "../AppContext";
 import axios from "axios";
 import { Loader } from "./Loader";
 
-const Form = ({ history, form, pathNew, pathUpdate}) => {
+const Form = ({ history, form, pathNew, pathUpdate, title}) => {
     const query = useQuery()
     const id = query.get('id')
     const [formUpdate, setFormUpdate] = React.useState([])
@@ -48,11 +48,13 @@ const Form = ({ history, form, pathNew, pathUpdate}) => {
     
     return id
     ? <FormUI form={ formUpdate } 
+    title={`Actualizar ${title}`}
     submit='Actualizar'
     messageSubmit='Cliente Actualizado'
     goBack={history.goBack} 
     endpoint={(data) => axios.put(pathUpdate + id , data, { headers }) }/> 
     : <FormUI form={ form }
+    title={`Crear ${title}`}
     submit='Crear' 
     messageSubmit='Creado Exitosamente'
     goBack={history.goBack}

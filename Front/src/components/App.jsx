@@ -5,6 +5,7 @@ import logo from '../assets/icons/nazza-logo.png'
 import { AppContext } from '../AppContext'
 import { API } from '../ApiProvider';
 import { formClient } from '../InputCliente';
+import { formServicio } from '../InputServicio';
 
 import { Login } from './Login'
 import { Navbar } from './Navbar';
@@ -24,7 +25,7 @@ const App = () => {
     '/': 'Mis Citas',
     '/reportes': 'Mis Reportes',
     '/clientes': 'Mis Clientes',
-    '/clientes/nuevo': 'Cliente',
+    '/clientes/form': 'Cliente',
     '/servicios': 'Mis Servicios'
   }
   
@@ -52,7 +53,7 @@ const App = () => {
         </Route>
         <Route exact path='/clientes'>
           <ClienteList />
-          <ButtonAction link='/clientes/nuevo' 
+          <ButtonAction link='/clientes/form' 
           style={{
             position: 'fixed', 
             bottom: '20%',
@@ -61,10 +62,29 @@ const App = () => {
             background: '#fff'
           }} />
         </Route>
-        <Route exact path='/clientes/nuevo/'>
+        <Route exact path='/clientes/form'>
           <Form
+          title="Cliente"
           history={history} 
           form={formClient}
+          pathNew={CLIENTS_NEW}
+          pathUpdate={CLIENTS}/>
+        </Route>
+        <Route exact path='/servicios'>
+          <ButtonAction link='/servicios/form' 
+          style={{
+            position: 'fixed', 
+            bottom: '20%',
+            right: '10%',
+            fontSize: '60px',
+            background: '#fff'
+          }} />
+        </Route>
+        <Route exact path='/servicios/form'>
+          <Form
+          title="Servicio"
+          history={history} 
+          form={formServicio}
           pathNew={CLIENTS_NEW}
           pathUpdate={CLIENTS}/>
         </Route>
