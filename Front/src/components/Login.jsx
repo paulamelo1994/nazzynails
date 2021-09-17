@@ -29,8 +29,8 @@ const Login = () => {
             console.log(response)
             createCookie(response.data.token)
         } catch (error) {
-            setError(error.message)
-            console.log(error.message)
+            setError(error.response?.data || error.message)
+            console.log(error.data)
         }
         setLoad(false)
     }

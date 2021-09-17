@@ -7,7 +7,7 @@ import { AppContext } from '../AppContext'
 import {Login} from './Login'
 import {Navbar} from './Navbar';
 import {Citas} from './Citas';
-import {Agregar} from './Agregar';
+import { ButtonAction } from './ButtonAction';
 import { FormCliente } from './FormCliente';
 import { ClienteList } from './ClienteList';
 
@@ -47,7 +47,7 @@ const App = () => {
         </Route>
         <Route exact path='/clientes'>
           <ClienteList />
-          <Agregar link='/clientes/nuevo' 
+          <ButtonAction link='/clientes/nuevo' 
           style={{
             position: 'fixed', 
             bottom: '20%',

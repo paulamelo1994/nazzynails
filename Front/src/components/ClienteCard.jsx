@@ -1,5 +1,5 @@
 import React from "react";
-import { Agregar } from "./Agregar";
+import { ButtonAction } from "./ButtonAction";
 
 const ClienteCard = ({ nombre, apellido, telefono, id }) => {
     return <section className="cliente__card pb-3 pt-3">
@@ -20,14 +20,14 @@ const ClienteCard = ({ nombre, apellido, telefono, id }) => {
                 <span>{new Date().toLocaleDateString()}</span>
             </ul>
             </div>
-            <Agregar icon="bi bi-pencil" style={{
+            <ButtonAction icon="bi bi-pencil" style={{
                 background: 'var(--main-color)', 
                 color: '#fff', 
                 fontSize: '30px'}}
                 link={`clientes/nuevo?id=${id}`}
                 />
         </div>
-        <h5 className="text-center mt-1 mb-1 p-1">Último(s) servicio(s)</h5>
+        <h5 className="text-center mt-1 mb-1 p-1"><strong>Último(s) servicio(s)</strong></h5>
         <ul className="list-group">
             <span>Servicio 1</span>
             <span>Servicio 2</span>
