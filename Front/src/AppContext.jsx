@@ -9,6 +9,11 @@ function useQuery() {
 
 function AppProvider({ children }){
     const cookies = new Cookies()
+    const tipoToast = {
+        CREAR : 'crear',
+        WARNING: 'precaucion',
+        ERROR: 'error'
+    }
     const [token, setToken] = React.useState(cookies.get('token'))
     const [toast, setToast] = React.useState({
         message: '',
@@ -17,18 +22,21 @@ function AppProvider({ children }){
     
     const createCookie = (token) => {
         cookies.set("token", token, { path: "/" , sameSite: true, secure: true})
+        setToken(token)
     }
     React.useEffect(() => {
         if(toast.message){
-            setTimeout(() => setToast({...toast, message:'' }), 3000)
+           setTimeout(() => setToast({...toast, message:'' }), 3000)
         }
     })
+
     return <AppContext.Provider value={{
         token,
         setToken,
         createCookie,
         toast,
-        setToast
+        setToast,
+        tipoToast
     }}>
         {children}
     </AppContext.Provider>

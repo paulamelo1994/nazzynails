@@ -3,16 +3,19 @@ import { Switch, Route, useLocation, useHistory, Redirect } from 'react-router-d
 import '../assets/css/App.css';
 import logo from '../assets/icons/nazza-logo.png'
 import { AppContext } from '../AppContext'
+import { API } from '../ApiProvider';
+import { formClient } from '../InputCliente';
 
-import {Login} from './Login'
-import {Navbar} from './Navbar';
-import {Citas} from './Citas';
+import { Login } from './Login'
+import { Navbar } from './Navbar';
+import { Citas } from './Citas';
 import { ButtonAction } from './ButtonAction';
-import { FormCliente } from './FormCliente';
+import { Form } from './Form';
 import { ClienteList } from './ClienteList';
 import { Toast } from './Toast';
 
 const App = () => {
+  const { CLIENTS, CLIENTS_NEW } = API
   const location = useLocation()
   const history = useHistory()
   const { token, toast } = React.useContext(AppContext)
@@ -38,7 +41,7 @@ const App = () => {
   }}>
     {!loginPath && <Header />}
     {!loginPath && <Navbar />}
-    <div className="container d-flex justify-content-center">
+    <div className="container" style={{margin: 'auto', display: 'flex',justifyContent: 'center'}}>
       {toast.message && <Toast />}
       <Switch>
         <Route exact path='/login'>
@@ -59,7 +62,11 @@ const App = () => {
           }} />
         </Route>
         <Route exact path='/clientes/nuevo/'>
-          <FormCliente history={history}/>
+          <Form
+          history={history} 
+          form={formClient}
+          pathNew={CLIENTS_NEW}
+          pathUpdate={CLIENTS}/>
         </Route>
       </Switch>
     </div>

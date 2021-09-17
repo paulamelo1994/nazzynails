@@ -1,9 +1,8 @@
-const form = [{
+const formClient = [{
         name: 'phoneNumber',
         placeholder: 'Teléfono',
         type: 'number',
         options: {
-            value: "1111111111",
             required: "Este campo es requerido",
             valueAsNumber: "Escriba un numero de télefono valido"
         }
@@ -38,4 +37,4 @@ const form = [{
         }
     }
 ]
-export { form }
+export { formClient }

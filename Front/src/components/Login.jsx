@@ -10,7 +10,7 @@ const Login = () => {
         username: '',
         password: ''
     })
-    const [load, setLoad] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
     const { token, createCookie } = React.useContext(AppContext)
     
@@ -23,7 +23,7 @@ const Login = () => {
     const auth = async (e) => {
         const { USERS_AUTH } = API
         e.preventDefault()
-        setLoad(true)
+        setLoading(true)
         try {
             const response = await axios.post(USERS_AUTH, data)
             console.log(response)
@@ -32,11 +32,15 @@ const Login = () => {
             setError(error.response?.data || error.message)
             console.log(error.data)
         }
-        setLoad(false)
+        setLoading(false)
     }
 
     if(error){
         return <p>Error - {error}</p>
+    }
+
+    if(token){
+        return <Redirect to="/" /> 
     }
     
     return <form className="form__login text-center p-4" onSubmit={auth}>
@@ -60,8 +64,7 @@ const Login = () => {
             <input className="form-check-input check-lg" type="checkbox" id="session" defaultChecked={true}/>
             <label className="form-check-label" htmlFor="session">Mantener mi sesión iniciada</label>
         </div>
-        <button className="login__btn w-100" type="submit">{load ? token : 'Entrar'}</button>
-        { token && <Redirect to="/" /> }
+        <button className="login__btn w-100" type="submit">{loading ? 'Enviando...' : 'Entrar'}</button>
     </form>
 }
 

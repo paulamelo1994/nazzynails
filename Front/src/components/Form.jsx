@@ -1,73 +1,62 @@
-import React from 'react'
-import { useForm } from "react-hook-form";
-import { AppContext } from '../AppContext';
-import '../assets/css/Form.css'
+import React from "react";
+import { FormUI } from './FormUI';
+import { useQuery, AppContext } from "../AppContext";
+import axios from "axios";
+import { Loader } from "./Loader";
 
-/**
- * @form es un arreglo que contiene objetos con
- * la siguiente estructura
- * @input {Object} objeto que se renderizará como un input
- * @name {Object} input.name Nombre del input
- * @placeholder {Object} input.placeholder Placeholder del input
- * @type {Object} input.type Tipo de input
- * @options {Object} input.options es un objeto que contiene los attr de useForm
-*/
-const Form = ({ form , goBack, endpoint, submit, messageSubmit}) => {
-    const [dataForm, setDataForm] = React.useState(form || [])
-    const [loading, setLoading] = React.useState(false)
-    const [error, setError] = React.useState('')
-    const { setToast } = React.useContext(AppContext)
-    const {
-        register, 
-        formState: {errors}, 
-        handleSubmit,
-    } = useForm()
+const Form = ({ history, form, pathNew, pathUpdate}) => {
+    const query = useQuery()
+    const id = query.get('id')
+    const [formUpdate, setFormUpdate] = React.useState([])
+    const [loading, setLoading] = React.useState(id!==null)
+    const { token } = React.useContext(AppContext)
+    const headers = {
+        Authorization: `Bearer ${token}`
+    }  
     
-    const onSubmit = async data => {
-        console.log(form)
-        setDataForm([])
-        setDataForm(form)
-        
-        data.phoneNumber = data.phoneNumber.toString()
-        
-        setLoading(true)
-        try {
-            const response = await endpoint(data)
-            console.log(response)
-        } catch (error) {
-            console.log(error.message)
-            setError(error.message)
-        }
-        setLoading(false)
-        setToast({message: messageSubmit, tipo: 'CREAR'})
-        goBack()
-    }
-    if (error){
-        return <p>error</p>
-    }
-    if(loading){
-        return <p>Cargando...</p>
-    }
-    return <form className="form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-        <h2 className="mb-4">Nuevo Cliente</h2>
-        { dataForm.map((i, key) => (
-            <div key={key} className="form-group mb-4">
-                <input className="form-control p-3 border-maroon"
-                style={{boxShadow: errors[i.name] && ' 0 0 0 0.25rem lightcoral'}} 
-                {...i} 
-                {...register(i.name, i.options)}/>
-                {errors[i.name] && 
-                    <small className="">
-                        <i className="bi bi-exclamation-circle-fill"></i> {errors[i.name]?.message}
-                    </small>
+    React.useEffect(()=> {
+        const getData = async () => {
+            const headers = {
+                Authorization: `Bearer ${token}`
+            }  
+            setLoading(true)
+            try {
+                const response = await axios.get(pathUpdate + id, { headers })
+                for (let element of form) {
+                    formUpdate.push({ 
+                            ...element,
+                            options: { 
+                                ...element.options, 
+                                value: response.data[element.name]
+                            }
+                        })             
                 }
-            </div>
-        )) }
-        <div className="form-row d-flex justify-content-evenly">
-            <button type="submit" className="btn__submit">{submit}</button>
-            <button type="button" className="btn__cancel" onClick={goBack}>Cancelar</button>
-        </div>
-    </form>
+                setFormUpdate(formUpdate)
+            } catch (error) {
+                console.log(error.message)
+            }
+            setLoading(false)
+        }
+        if(id !== null){
+            getData()
+        }
+    }, [token, formUpdate, id, form, pathUpdate])
+
+    if (loading){
+        return <Loader />
+    }
+    
+    return id
+    ? <FormUI form={ formUpdate } 
+    submit='Actualizar'
+    messageSubmit='Cliente Actualizado'
+    goBack={history.goBack} 
+    endpoint={(data) => axios.put(pathUpdate + id , data, { headers }) }/> 
+    : <FormUI form={ form }
+    submit='Crear' 
+    messageSubmit='Creado Exitosamente'
+    goBack={history.goBack}
+    endpoint={(data) => axios.post(pathNew, data, { headers }) }/> 
 }
 
 export { Form }
