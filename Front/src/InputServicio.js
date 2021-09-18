@@ -26,31 +26,34 @@ const formServicio = [{
         placeholder: 'Nombre',
         type: 'text',
         options: {
-            required: "Este campo es requerido"
+            required: "Este campo es requerido",
         }
     },
     {
         name: 'price',
         placeholder: 'Precio',
-        type: 'number',
+        type: 'text',
         format: toFormat,
         options: {
             required: "Este campo es requerido",
-            valueAsNumber: "Escriba un numero de télefono valido",
+            maxLength: { value: 10, message: "Hay demasiados números" },
             pattern: {
-                value: /^[0-9]$/,
-                message: "Ingrese un nombre valido."
+                value: /^([0-9]*)$/,
+                message: "Ingrese un número valido."
             }
         }
     },
     {
         name: 'time',
         placeholder: 'Duración',
-        type: 'number',
+        type: 'text',
         format: toTime,
         options: {
             required: "Este campo es requerido",
-            valueAsNumber: "Escriba un numero de télefono valido",
+            pattern: {
+                value: /^([0-9]*)$/,
+                message: "Ingrese un número valido para el tiempo ej: 3000 = 00:30:00"
+            }
         }
 
     },

@@ -2,7 +2,7 @@ import React from "react";
 import { ButtonAction } from "./ButtonAction";
 
 const ClienteCard = ({ nombre, apellido, telefono, id }) => {
-    return <section className="cliente__card pb-3 pt-3">
+    return <section className="cliente__card col-md-4 pb-3 pt-3">
         <div className="d-flex align-items-center justify-content-between">
             <div className="w-75">
             <ul className="p-0 d-flex align-items-center justify-content-between">

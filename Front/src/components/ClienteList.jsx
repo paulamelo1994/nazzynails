@@ -38,7 +38,7 @@ const ClienteList = () => {
         return <Loader />
     }
 
-    return <ul className="list-group">
+    return <ul className="d-flex p-0 row">
         {
             clientes.map(c => <ClienteCard key={c.id} 
                 nombre={c.name} 

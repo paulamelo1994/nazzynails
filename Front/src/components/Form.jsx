@@ -10,11 +10,11 @@ const Form = ({ history, form, pathNew, pathUpdate, title}) => {
     const [formUpdate, setFormUpdate] = React.useState([])
     const [loading, setLoading] = React.useState(id!==null)
     const { token, setToast, tipoToast} = React.useContext(AppContext)
-        const headers = {
-            Authorization: `Bearer ${token}`
-        }  
-        
-        React.useEffect(()=> {
+    const headers = {
+        Authorization: `Bearer ${token}`
+    }  
+    
+    React.useEffect(()=> {
         const getData = async () => {
             const headers = {
                 Authorization: `Bearer ${token}`
@@ -22,17 +22,18 @@ const Form = ({ history, form, pathNew, pathUpdate, title}) => {
             setLoading(true)
             try {
                 const response = await axios.get(pathUpdate + id, { headers })
-                for (let element of form) {
-                    formUpdate.push({ 
+                    for (let element of form) {
+                        formUpdate.push({ 
                             ...element,
                             options: { 
                                 ...element.options, 
                                 value: response.data[element.name]
                             }
-                        })             
-                }
-                setFormUpdate(formUpdate)
+                        })
+                    }             
+                    setFormUpdate(formUpdate)
             } catch (error) {
+                setFormUpdate([])
                 setToast({ 
                     message: error.response?.data || error.message,
                     tipo: tipoToast.ERROR
@@ -40,10 +41,10 @@ const Form = ({ history, form, pathNew, pathUpdate, title}) => {
             }
             setLoading(false)
         }
-        if(id !== null){
+        if(id !== null ){
             getData()
         }
-    }, [token, setToast, tipoToast, formUpdate, id, form, pathUpdate])
+    }, [token, setToast, tipoToast.ERROR, formUpdate, id, form, pathUpdate])
 
     if (loading){
         return <Loader />

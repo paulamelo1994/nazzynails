@@ -4,6 +4,8 @@ const formClient = [{
         type: 'text',
         options: {
             required: "Este campo es requerido",
+            minLength: { value: 7, message: "Hacen falta números" },
+            maxLength: { value: 10, message: "Hay demasiados números" },
             pattern: {
                 value: /^([0-9]*)$/,
                 message: "Ingrese un número valido"
