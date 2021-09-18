@@ -44,7 +44,6 @@ const FormUI = ({ form ,
     }
 
     const onSubmit = async data => {
-        console.log(data)
         setLoading(true)
         try {
             const response = await endpoint(data)

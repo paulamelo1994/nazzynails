@@ -1,14 +1,15 @@
 import React from "react";
 import { ButtonAction } from "./ButtonAction";
 
-const ClienteCard = ({ nombre, apellido, telefono, id }) => {
+const ClienteCard = ({ nombre, telefono, id }) => {
+    const nombreNormalize = nombre.split(" ").map(s => s.length >= 10 ? s.slice(0, 10) + ".." : s)
     return <section className="cliente__card col-md-4 pb-3 pt-3">
         <div className="d-flex align-items-center justify-content-between">
             <div className="w-75">
             <ul className="p-0 d-flex align-items-center justify-content-between">
-                <h4 style={{color: 'var(--main-color)'}}>{nombre || 'Nombre'} {apellido || 'Apellido'}</h4>
+                <h4 style={{color: 'var(--main-color)'}}>{nombreNormalize[0] || ''} {nombreNormalize[1] || ''}</h4>
                 <a href={`https://api.whatsapp.com/send?phone=+57${telefono}`} className="cliente__card-telefono">
-                    <i className="bi bi-whatsapp"> </i>{telefono || 'Teléfono'}
+                    <i className="bi bi-whatsapp" style={{marginRight: '5px'}}></i>{telefono || ''}
                 </a>
             </ul>
             <ul className="p-0 d-flex justify-content-between">

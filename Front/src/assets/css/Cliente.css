@@ -1,7 +1,11 @@
 .cliente__card {
-    font-size: 18px;
+    font-size: 14px;
     border-bottom: 1px solid #ccc;
     color: var(--text);
+}
+
+.cliente__card a {
+    font-size: 14px;
 }
 
 .cliente__card-telefono {
@@ -9,6 +13,7 @@
     color: green;
     font-size: 20px;
     display: flex;
+    margin-left: 10px;
 }
 
 h5 {
