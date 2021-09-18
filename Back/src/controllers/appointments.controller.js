@@ -8,6 +8,7 @@ const appointmentService = require('../services/appointment.service');
 // routes
 router.post('/create', authorize(), newAppointmentSchema, newAppointment);
 router.get('/', authorize(), getAll);
+router.get('/date', authorize(), getAllbyDate);
 router.get('/:id', authorize(), getById);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
@@ -58,6 +59,34 @@ function getAll(req, res, next) {
                     "time": appointment.time,
                     "serviceList": serviceList,
                     "appointmentIsDone": appointment.appointmentIsDone,
+                })
+            });
+            res.json(data);})
+        .catch(next);
+}
+
+function getAllbyDate(req, res, next) {
+    var data = []
+    appointmentService.getAllbyDate(req.user)
+        .then(appointments => {
+            appointments.forEach(appointment => {
+                var client = {
+                    "id": appointment.clientId.id
+                }
+                var serviceList = [];
+                for(service of appointment.serviceList){
+                    serviceList.push({
+                        "id": service.id,
+                        "name": service.name,
+                        "length": service.length,
+                        "enable": service.enable,
+                        "price": service.price
+                    });
+                };
+                data.push({ 
+                    "id": appointment.id,
+                    "time": appointment.time,
+                    "serviceList": serviceList,
                 })
             });
             res.json(data);})

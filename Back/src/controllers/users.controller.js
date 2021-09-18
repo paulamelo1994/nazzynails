@@ -35,7 +35,7 @@ function authenticate(req, res, next) {
                 "token": user.token
             }
             ))
-        .catch(next);
+        .catch(() => {res.json({message: req.error})});
 }
 
 function registerSchema(req, res, next) {
@@ -51,7 +51,13 @@ function registerSchema(req, res, next) {
 function register(req, res, next) {
     userService.create(req.body)
         .then(() => res.json({ message: 'Registration successful' }))
-        .catch(next);
+        .catch((error) => {
+            if(!req.error){
+                res.json({message: error})
+            } else {
+                res.json({message: req.error})
+            }
+        });
 }
 
 function getAll(req, res, next) {
@@ -84,7 +90,7 @@ function getById(req, res, next) {
                 "username": user.username
             })
         })
-        .catch(next);
+        .catch((error) => {res.json({message: error})});
 }
 
 function updateSchema(req, res, next) {
@@ -100,11 +106,19 @@ function updateSchema(req, res, next) {
 function update(req, res, next) {
     userService.update(req.params.id, req.body)
         .then(user => res.json(user))
-        .catch(next);
+        .catch((error) => {
+            if(!req.error){
+                res.json({message: error})
+            } else {
+                res.json({message: req.error})
+            }
+        });
 }
 
 function _delete(req, res, next) {
     userService.delete(req.params.id)
         .then(() => res.json({ message: 'User deleted successfully' }))
-        .catch(next);
+        .catch((error) => {
+                res.json({message: error})
+        });
 }
