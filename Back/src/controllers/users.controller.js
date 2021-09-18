@@ -5,7 +5,6 @@ const validateRequest = require('../_middleware/validate-request');
 const authorize = require('../_middleware/authorize');
 const userService = require('../services/user.service');
 
-// routes
 router.post('/authenticate', authenticateSchema, authenticate);
 router.post('/register', registerSchema, register);
 router.get('/', authorize(), getAll);
@@ -26,7 +25,7 @@ function authenticateSchema(req, res, next) {
 
 function authenticate(req, res, next) {
     userService.authenticate(req.body)
-        .then(user => res.json(
+        .then((user) => res.json(
             { 
                 "id": user.id,
                 "firstName": user.firstName,
@@ -35,7 +34,7 @@ function authenticate(req, res, next) {
                 "token": user.token
             }
             ))
-        .catch(() => {res.json({message: req.error})});
+        .catch(next);
 }
 
 function registerSchema(req, res, next) {
@@ -50,28 +49,22 @@ function registerSchema(req, res, next) {
 
 function register(req, res, next) {
     userService.create(req.body)
-        .then(() => res.json({ message: 'Registration successful' }))
-        .catch((error) => {
-            if(!req.error){
-                res.json({message: error})
-            } else {
-                res.json({message: req.error})
-            }
-        });
+        .then(() => res.status(201).json({ message: 'Registration successful' }))
+        .catch(next);
 }
 
 function getAll(req, res, next) {
-    var data = []
+    var data = [];
     userService.getAll()
-        .then(users => {
-            users.forEach(user => {
+        .then((users) => {
+            for (user of users) {
                 data.push({ 
                     "id": user.id,
                     "firstName": user.firstName,
                     "lastName": user.lastName,
                     "username": user.username
-                })
-            });
+                });
+            };
             res.json(data);})
         .catch(next);
 }
@@ -82,15 +75,15 @@ function getCurrent(req, res, next) {
 
 function getById(req, res, next) {
     userService.getById(req.params.id)
-        .then(user => {
+        .then((user) => {
             res.json({
                 "id": user.id,
                 "firstName": user.firstName,
                 "lastName": user.lastName,
                 "username": user.username
-            })
+            });
         })
-        .catch((error) => {res.json({message: error})});
+        .catch(next);
 }
 
 function updateSchema(req, res, next) {
@@ -105,20 +98,12 @@ function updateSchema(req, res, next) {
 
 function update(req, res, next) {
     userService.update(req.params.id, req.body)
-        .then(user => res.json(user))
-        .catch((error) => {
-            if(!req.error){
-                res.json({message: error})
-            } else {
-                res.json({message: req.error})
-            }
-        });
+        .then((user) => res.json(user))
+        .catch(next);
 }
 
 function _delete(req, res, next) {
     userService.delete(req.params.id)
         .then(() => res.json({ message: 'User deleted successfully' }))
-        .catch((error) => {
-                res.json({message: error})
-        });
+        .catch(next);
 }

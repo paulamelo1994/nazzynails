@@ -34,7 +34,7 @@ function getAll(req, res, next) {
     var data = []
     appointmentService.getAll(req.user)
         .then(appointments => {
-            appointments.forEach(appointment => {
+            for (appointment of appointments) {
                 var client = {
                     "id": appointment.clientId.id,
                     "name": appointment.clientId.name,
@@ -60,16 +60,16 @@ function getAll(req, res, next) {
                     "serviceList": serviceList,
                     "appointmentIsDone": appointment.appointmentIsDone,
                 })
-            });
+            };
             res.json(data);})
         .catch(next);
 }
 
 function getAllbyDate(req, res, next) {
-    var data = []
+    var data = [];
     appointmentService.getAllbyDate(req.user)
         .then(appointments => {
-            appointments.forEach(appointment => {
+            for (appointment of appointments){
                 var client = {
                     "id": appointment.clientId.id
                 }
@@ -88,14 +88,14 @@ function getAllbyDate(req, res, next) {
                     "time": appointment.time,
                     "serviceList": serviceList,
                 })
-            });
+            };
             res.json(data);})
         .catch(next);
 }
 
 function getById(req, res, next) {
     appointmentService.getById(req.user, req.params.id)
-        .then(appointment => {
+        .then((appointment) => {
             res.json(appointment)
         })
         .catch(next);

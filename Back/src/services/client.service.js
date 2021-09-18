@@ -41,7 +41,7 @@ async function update(user, id, params) {
         where: {
           id: id,
           userId: user.id
-        },
+        }
       });
     if (!client) throw 'Client not found';
     Object.assign(client, params);
