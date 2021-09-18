@@ -26,15 +26,15 @@ function newServiceSchema(req, res, next) {
 
 function newService(req, res, next) {
     serviceService.create(req.user, req.body)
-        .then(() => res.json({message: 'Service created successful' }))
+        .then(() => {res.json({message: 'Service created successful' });})
         .catch(next);
 }
 
 function getAll(req, res, next) {
-    var data = []
+    var data = [];
     serviceService.getAll(req.user)
         .then(services => {
-            services.forEach(service => {
+            for (service of services) {
                 data.push({ 
                     "id": service.id,
                     "name": service.name,
@@ -42,8 +42,9 @@ function getAll(req, res, next) {
                     "enable": service.enable,
                     "price": service.price
                 })
-            });
-            res.json(data);})
+            }
+            res.json(data);
+        })
         .catch(next);
 }
 

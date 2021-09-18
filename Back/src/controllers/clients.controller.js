@@ -31,10 +31,10 @@ function newClient(req, res, next) {
 }
 
 function getAll(req, res, next) {
-    var data = []
+    var data = [];
     clientService.getAll(req.user)
         .then(clients => {
-            clients.forEach(client => {
+            for (client of clients) {
                 data.push({ 
                     "id": client.id,
                     "name": client.name,
@@ -42,8 +42,9 @@ function getAll(req, res, next) {
                     "email": client.email,
                     "phoneNumber": client.phoneNumber
                 })
-            });
-            res.json(data);})
+            };
+            res.json(data);
+        })
         .catch(next);
 }
 
@@ -73,7 +74,7 @@ function updateSchema(req, res, next) {
 
 function update(req, res, next) {
     clientService.update(req.user, req.params.id, req.body)
-        .then(client => res.json({
+        .then((client) => res.json({
             "id": client.id,
             "name": client.name,
             "address": client.address,
