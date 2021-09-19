@@ -1,7 +1,7 @@
 const toFormat = (number) => {
     const formatter = new Intl.NumberFormat("en-ES", {
         style: "currency",
-        currency: "COP"
+        currency: "USD"
     });
     if (number < 0) {
         number = 0
@@ -16,7 +16,7 @@ const toTime = (time) => {
         time = '0' + time
     }
     try {
-        return `${time.slice(0, 2)} : ${time.slice(2, 4)} : ${time.slice(4, 6)}`
+        return `${time.slice(0, 2)} h : ${time.slice(2, 4)} m : ${time.slice(4, 6)} s`
     } catch {
         return "0"
     }
@@ -66,4 +66,4 @@ const formServicio = [{
         }
     }
 ]
-export { formServicio }
+export { formServicio, toFormat, toTime }

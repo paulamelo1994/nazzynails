@@ -1,0 +1,21 @@
+.servicio__card {
+    border-bottom: 1px solid #ccc;
+}
+
+.servicio__card h4 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.service__card-precio {
+    font-weight: bold;
+    color: rgb(105, 105, 105);
+}
+
+.service__card-tiempo {
+    color: lightseagreen;
+}
+
+.service__card-active {
+    color: var(--main-color);
+}

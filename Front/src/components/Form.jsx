@@ -54,7 +54,7 @@ const Form = ({ history, form, pathNew, pathUpdate, title}) => {
     ? <FormUI form={ formUpdate } 
     title={`Actualizar ${title}`}
     submit='Actualizar'
-    messageSubmit='Cliente Actualizado'
+    messageSubmit={`${title} Actualizado`}
     goBack={history.goBack} 
     endpoint={(data) => axios.put(pathUpdate + id , data, { headers }) }/> 
     : <FormUI form={ form }

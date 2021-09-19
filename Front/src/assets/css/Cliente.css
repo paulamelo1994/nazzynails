@@ -17,6 +17,6 @@
 }
 
 h5 {
-    color: lightslategray;
-    background: lightcyan;
+    color: var(--main-color);
+    background: lemonchiffon;
 }

@@ -13,7 +13,9 @@ import { Citas } from './Citas';
 import { ButtonAction } from './ButtonAction';
 import { Form } from './Form';
 import { ClienteList } from './ClienteList';
+import { ServiceList } from './ServiceList';
 import { Toast } from './Toast';
+
 
 const App = () => {
   const { CLIENTS, CLIENTS_NEW, SERVICES, SERVICES_NEW } = API
@@ -71,6 +73,7 @@ const App = () => {
           pathUpdate={CLIENTS}/>
         </Route>
         <Route exact path='/servicios'>
+          <ServiceList />
           <ButtonAction link='/servicios/form' 
           style={{
             position: 'fixed', 

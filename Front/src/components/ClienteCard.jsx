@@ -22,7 +22,7 @@ const ClienteCard = ({ nombre, telefono, id }) => {
             </ul>
             </div>
             <ButtonAction icon="bi bi-pencil" style={{
-                background: 'var(--main-color)', 
+                background: 'lightseagreen', 
                 color: '#fff', 
                 fontSize: '30px'}}
                 link={`clientes/form?id=${id}`}

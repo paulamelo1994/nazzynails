@@ -1,5 +1,5 @@
 .button_action {
-    color: var(--main-color);
+    color: lightseagreen;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,8 +11,8 @@
 }
 
 .button_action:hover {
-    color: var(--main-color);
-    opacity: .4;
+    color: lightseagreen;
+    opacity: .1;
 }
 
 @keyframes jump {
