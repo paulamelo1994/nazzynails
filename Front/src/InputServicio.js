@@ -44,7 +44,7 @@ const formServicio = [{
         }
     },
     {
-        name: 'time',
+        name: 'length',
         placeholder: 'Duración',
         type: 'text',
         format: toTime,
@@ -58,7 +58,7 @@ const formServicio = [{
 
     },
     {
-        name: 'active',
+        name: 'enable',
         placeholder: 'Activo',
         type: 'checkbox',
         options: {

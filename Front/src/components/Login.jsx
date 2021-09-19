@@ -28,7 +28,7 @@ const Login = () => {
             createCookie(response.data.token)
         } catch (error) {
             setToast({ 
-                message: error.response?.data || error.message,
+                message: error.response.data.message || error.message,
                 tipo: tipoToast.ERROR
             })
         }

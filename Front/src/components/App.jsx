@@ -16,7 +16,7 @@ import { ClienteList } from './ClienteList';
 import { Toast } from './Toast';
 
 const App = () => {
-  const { CLIENTS, CLIENTS_NEW } = API
+  const { CLIENTS, CLIENTS_NEW, SERVICES, SERVICES_NEW } = API
   const location = useLocation()
   const history = useHistory()
   const { token, toast } = React.useContext(AppContext)
@@ -85,8 +85,8 @@ const App = () => {
           title="Servicio"
           history={history} 
           form={formServicio}
-          pathNew={CLIENTS_NEW}
-          pathUpdate={CLIENTS}/>
+          pathNew={SERVICES_NEW}
+          pathUpdate={SERVICES}/>
         </Route>
       </Switch>
     </div>

@@ -9,8 +9,7 @@ import { Loader } from './Loader'
 const ClienteList = () => {
     const [clientes, setClientes] = React.useState([])
     const [loading, setLoading] = React.useState(false)
-    const [error, setError] = React.useState('')
-    const { token } = React.useContext(AppContext)
+    const { token, setToast, tipoToast } = React.useContext(AppContext)
 
     React.useEffect(() => {
         const getClientes = async() => {
@@ -23,16 +22,15 @@ const ClienteList = () => {
                 const response = await axios.get(CLIENTS, { headers })
                 setClientes(response.data)
             } catch (error) {
-                console.log(error.message)
-                setError(error.message)
+                setToast({
+                    message: error.response?.data.message || error.message,
+                    tipoToast: tipoToast.ERROR
+                })
             }
             setLoading(false)
         }
         getClientes()
-    }, [token])
-    if (error){
-        return <p>Error</p>
-    }
+    }, [token, setToast, tipoToast.ERROR])
 
     if(loading){
         return <Loader />

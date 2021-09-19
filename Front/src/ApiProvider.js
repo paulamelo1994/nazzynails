@@ -6,6 +6,8 @@ const API = {
     USERS_AUTH: 'users/authenticate/',
     CLIENTS: 'clients/',
     CLIENTS_NEW: 'clients/create/',
+    SERVICES: 'services/',
+    SERVICES_NEW: 'services/create/'
 }
 
 Object.keys(API).map(key => API[key] = `${URL}/${API[key]}`)

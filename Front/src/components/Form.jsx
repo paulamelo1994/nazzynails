@@ -35,7 +35,7 @@ const Form = ({ history, form, pathNew, pathUpdate, title}) => {
             } catch (error) {
                 setFormUpdate([])
                 setToast({ 
-                    message: error.response?.data || error.message,
+                    message: error.response?.data.message || error.message,
                     tipo: tipoToast.ERROR
                 })
             }
