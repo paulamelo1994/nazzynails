@@ -108,14 +108,14 @@ async function generatePDF(data, total, date){
     orientation: "portrait",
     border: "10mm",
     header: {
-        height: "45mm",
+        height: "0mm",
         contents: ''
     },
     footer: {
-        height: "28mm",
+        height: "0mm",
         contents: {
             first: '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>',
-            2: 'Second page',
+            2: '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>',
             default: '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>',
             last: '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>'
         }
