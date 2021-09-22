@@ -92,7 +92,6 @@ async function createReport(user, body) {
 }
 
 async function generatePDF(data, total, date){
-console.log(total);
   var document = {
     html: html,
     data: {
