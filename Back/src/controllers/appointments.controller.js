@@ -37,18 +37,18 @@ function newAppointment(req, res, next) {
 }
 
 function getAll(req, res, next) {
-    var data = []
+    let data = []
     appointmentService.getAll(req.user)
         .then(appointments => {
             for (appointment of appointments) {
-                var client = {
+                let client = {
                     "id": appointment.clientId.id,
                     "name": appointment.clientId.name,
                     "address": appointment.clientId.address,
                     "email": appointment.clientId.email,
                     "phoneNumber": appointment.clientId.phoneNumber
                 }
-                var serviceList = [];
+                let serviceList = [];
                 for(service of appointment.serviceList){
                     serviceList.push({
                         "id": service.id,

@@ -54,7 +54,7 @@ function register(req, res, next) {
 }
 
 function getAll(req, res, next) {
-    var data = [];
+    let data = [];
     userService.getAll()
         .then((users) => {
             for (user of users) {

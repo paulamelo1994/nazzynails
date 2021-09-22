@@ -14,7 +14,7 @@ module.exports = {
 };
 
 async function getAll(user) {
-  var arrayResult = [];
+  let arrayResult = [];
     listAppointments = await db.Appointment.findAll({
         where: {
           userId: user.id
@@ -24,7 +24,7 @@ async function getAll(user) {
       loadClient = await db.Client.findOne({where:{id: appointment.clientId}});
       appointment.clientId = await loadClient;
   
-      var serviceList = []
+      let serviceList = []
       for (const service of await appointment.serviceList) {
         buscarServicio = await db.Service.findOne({
           where:{
@@ -50,7 +50,7 @@ async function getById(user, id) {
     loadClient = await db.Client.findOne({where:{id: appointment.clientId}});
     appointment.clientId = await loadClient;
 
-    var serviceList = []
+    let serviceList = []
     for (const service of await appointment.serviceList) {
       buscarServicio = await db.Service.findOne({
         where:{

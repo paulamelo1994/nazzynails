@@ -31,7 +31,7 @@ function newService(req, res, next) {
 }
 
 function getAll(req, res, next) {
-    var data = [];
+    let data = [];
     serviceService.getAll(req.user)
         .then(services => {
             for (service of services) {

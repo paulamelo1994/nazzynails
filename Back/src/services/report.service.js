@@ -4,18 +4,20 @@ const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
 const { param } = require('../controllers/reports.controller');
 const { Op } = require('sequelize');
-var pcn = require("pdf-creator-node");
-var fs = require("fs");
+let pcn = require("pdf-creator-node");
+let fs = require("fs");
 const { func } = require('joi');
-var html = fs.readFileSync("src/content/reportTemplate.html", "utf8");
+let html = fs.readFileSync("src/content/reportTemplate.html", "utf8");
 
 
 module.exports = {
-  createReport
+  createReport,
+  getDataWeek,
+  deleteReport
 };
 
 async function getDatabyDate(user, date) {
-  var date2 = new Date(date);
+  let date2 = new Date(date);
   date2 = date2.setMonth(date2.getMonth()+1);
 
     listAppointments = await db.Appointment.findAll({
@@ -29,8 +31,33 @@ async function getDatabyDate(user, date) {
     return await getListAppointments(await listAppointments);
 }
 
+async function getDataWeek(user, date) {
+  let date2 = new Date(date.date);
+  date2.setHours(0, 0, 0);
+  let date3 = new Date(date.date);
+  date3.setHours(23, 59, 59);
+  switch(date2.getDay()){
+    case 0:
+      date2.setDate(date2.getDate()-6)
+      break;
+    default: 
+      date2.setDate(date2.getDate()-(date2.getDay()-1))
+  }
+
+    listAppointments = await db.Appointment.findAll({
+        where: {
+          userId: user.id,
+          time: {[Op.between]: [date2, date3]}
+        },
+        order: [['time',  'ASC']]
+        
+      });
+      
+    return await getListAppointments(await listAppointments);
+}
+
 async function getListAppointments(arrayAppointments){
-  var arrayResult = [];
+  let arrayResult = [];
   for(const appointment of await arrayAppointments){
     loadClient = await db.Client.findOne({where:{id: appointment.clientId}});
     appointment.clientId = await loadClient;
@@ -45,11 +72,11 @@ async function getListAppointments(arrayAppointments){
 }
 
 function appointmentModified(appointment, value){
-  var time = appointment.time;
+  let time = appointment.time;
   time = time.toLocaleString("default");
   return {
     "id": appointment.id,
-    "client": appointment.clientId.id + ": " + appointment.clientId.name + " - " + appointment.clientId.phoneNumber,
+    "client": appointment.clientId.name + " - " + appointment.clientId.phoneNumber,
     "time" : time,
     "price" : value,
     "appointmentIsDone" : appointment.appointmentIsDone
@@ -57,7 +84,7 @@ function appointmentModified(appointment, value){
 }
 
 async function getListService(arrayServices){
-  var serviceList = []
+  let serviceList = []
     for (const service of await arrayServices) {
       buscarServicio = await db.Service.findOne({
         where:{
@@ -70,7 +97,7 @@ async function getListService(arrayServices){
 }
 
 async function calculateValue(arrayServices){
-  var value = 0;
+  let value = 0;
     for (const service of await arrayServices) {
       value += service.price;
     }
@@ -78,7 +105,7 @@ async function calculateValue(arrayServices){
 }
 
 async function calculateTotal(arrayPrices){
-  var total = 0;
+  let total = 0;
     for (const price of await arrayPrices) {
       total += price.price;
     }
@@ -88,22 +115,23 @@ async function calculateTotal(arrayPrices){
 async function createReport(user, body) {
   datos = await getDatabyDate(user, body.date);
   total = await calculateTotal(await datos);
-    return await generatePDF(await datos, await total, body.date);
+    return await generatePDF(await datos, await total, body.date, user.id);
 }
 
-async function generatePDF(data, total, date){
-  var document = {
+async function generatePDF(data, total, date, id){
+  let dateFormat = date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear()
+  let document = {
     html: html,
     data: {
       appointments: data,
       valorTotal: total,
-      date: date.toLocaleString('default', { month: 'long' }) + " " + date.getFullYear()
+      date: dateFormat
     },
-    path: "src/content/pdfGenerated/Reporte_NazzyNails.pdf",
+    path: "src/content/pdfGenerated/" + id + "_" + dateFormat + "_" + "Reporte_NazzyNails.pdf",
     type: "",
   };
 
-  var options = {
+  let options = {
     format: "Letter",
     orientation: "portrait",
     border: "10mm",
@@ -126,4 +154,12 @@ async function generatePDF(data, total, date){
   .then()
   .catch();
   return await pdf 
+}
+
+async function deleteReport(body) {
+  return await fs.unlink(body.filename, function(err) {
+    if (err) {
+      throw err
+    }
+  })
 }
