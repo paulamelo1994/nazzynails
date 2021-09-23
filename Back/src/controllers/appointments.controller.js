@@ -84,7 +84,8 @@ function updateSchema(req, res, next) {
         clientId: Joi.number().integer().empty(),
         time: Joi.date().empty(),
         serviceList: Joi.array().items(Joi.number().integer()).empty(),
-        appointmentIsDone: Joi.bool().empty()
+        appointmentIsDone: Joi.bool().empty(),
+        enabled: Joi.boolean().empty()
     });
     validateRequest(req, next, schema);
 }

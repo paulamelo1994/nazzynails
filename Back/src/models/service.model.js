@@ -8,7 +8,8 @@ function model(sequelize) {
         name: { type: DataTypes.STRING, allowNull: false },
         length: { type: DataTypes.INTEGER, allowNull: false },
         enable: { type: DataTypes.BOOLEAN, allowNull: false },
-        price: { type: DataTypes.INTEGER, allowNull: false }
+        price: { type: DataTypes.INTEGER, allowNull: false },
+        enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true}
     };
 
     return sequelize.define('Service', attributes);

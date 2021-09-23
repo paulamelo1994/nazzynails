@@ -67,7 +67,8 @@ function updateSchema(req, res, next) {
         name: Joi.string().empty(),
         length: Joi.number().integer().empty(),
         enable: Joi.bool().empty(),
-        price: Joi.number().integer().empty()
+        price: Joi.number().integer().empty(),
+        enabled: Joi.boolean().empty()
     });
     validateRequest(req, next, schema);
 }

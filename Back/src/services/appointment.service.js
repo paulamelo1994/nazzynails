@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 const db = require('../_helpers/db');
 const { param } = require('../controllers/appointments.controller');
 const { Op } = require('sequelize');
+const e = require('express');
 
 module.exports = {
     getAll,
@@ -17,7 +18,8 @@ async function getAll(user) {
   let arrayResult = [];
     listAppointments = await db.Appointment.findAll({
         where: {
-          userId: user.id
+          userId: user.id,
+          enabled: true
         }
       });
     for(const appointment of await listAppointments){
@@ -43,7 +45,8 @@ async function getById(user, id) {
     appointment = await db.Appointment.findOne({
         where: {
           id: id,
-          userId: user.id
+          userId: user.id,
+          enabled: true
         },
       });
     if (!appointment) {throw 'Appointment not found';}
@@ -69,19 +72,22 @@ async function create(user, params) {
 
     searchClient = await db.Client.findOne({
       where: {
-        id: params.clientId
+        id: params.clientId,
+        enabled: true
       }
     });
+    if (!searchClient) {throw 'Client not found';}
 
     for (const service of params.serviceList) {
-      buscarServicio = await db.Client.findOne({
+      buscarServicio = await db.Service.findOne({
         where:{
-          id: service
+          id: service,
+          enabled: true
         }
       })
       if(!buscarServicio){throw 'Service ' + service + ' not found';}
     }
-    if (!searchClient) {throw 'Client not found';}
+    
     await db.Appointment.create(params);
 }
 
@@ -93,6 +99,24 @@ async function update(user, id, params) {
         },
       });
     if (!appointment) throw 'Appointment not found';
+
+    searchClient = await db.Client.findOne({
+      where: {
+        id: params.clientId,
+        enabled: true
+      }
+    });
+    if (!searchClient) {throw 'Client not found';}
+    
+    for (const service of params.serviceList) {
+      buscarServicio = await db.Client.findOne({
+        where:{
+          id: service,
+          enabled: true
+        }
+      })
+      if(!buscarServicio){throw 'Service ' + service + ' not found';}
+    }
     Object.assign(appointment, params);
     await appointment.save();
     return appointment.get();
@@ -102,18 +126,21 @@ async function _delete(user, id) {
     appointment = await db.Appointment.findOne({
         where: {
           id: id,
-          userId: user.id
+          userId: user.id,
+          enabled: true
         },
       });
     if (!appointment) throw 'Appointment not found';
-    await appointment.destroy();
+    else appointment.enabled = false;
+    await appointment.save();
 }
 
 async function getAppointment(id) {
     const appointment = await db.Appointment.findByPk({
       where: {
         id: id,
-        userId: user.id
+        userId: user.id,
+        enabled: true
       },
     });
     if (!appointment) throw 'Appointment not found';
