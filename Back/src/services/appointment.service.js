@@ -40,17 +40,18 @@ async function getAll(user) {
     return await arrayResult;
 }
 
-async function getAllbyDate(user) {
+async function getAllbyDate(user, date) {
   var arrayResult = [];
     listAppointments = await db.Appointment.findAll({
         where: {
           userId: user.id,
-          time: {[Op.between]: ["2021-01-01 00:00:00", "2021-01-01 23:59:59"]}
+          time: {[Op.between]: [date + " 00:00:00", date + " 23:59:59"]}
         }
       });
     for(const appointment of await listAppointments){
       loadClient = await db.Client.findOne({where:{id: appointment.clientId}});
       appointment.clientId = await loadClient;
+      console.log(appointment.clientId)
   
       var serviceList = []
       for (const service of await appointment.serviceList) {

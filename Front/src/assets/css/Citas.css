@@ -1,35 +1,85 @@
 .citas__calendar {
-    display: flex;
-    justify-content: center;
-    margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
 }
 
-.react-calendar{
-    border: none;
+.citas__asignaciones {
+  margin-top: 60px;
+}
+
+.Asignaciones__card {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 100%;
+  font-size: 20px;
+  width: 100%;
+  border: 1px solid var(--main-color);
+  padding: 20px;
+  box-sizing: content-box;
+  border-radius: 15px;
+  box-shadow: 1px 1px 3px 2px rgb(0 0 0 / 20%);
+  background: #a64d791f;
+}
+.Asignaciones__card p {
+  margin: 2px 0;
+  font-weight: 400;
+}
+.Asignaciones__card h1 {
+  margin: 5px 0;
+  font-size: 24px;
+  color: var(--main-color);
+}
+
+.Asignaciones__datos-nombre {
+  color: var(--main-color);
+  font-weight: 700;
+}
+#hora {
+  color: var(--secondary-color);
+}
+#telefono {
+  color: var(--main-color);
+}
+
+.Asignaciones__servicios {
+  border-left: 0.5px solid var(--main-color);
+  padding-left: 10px;
+}
+
+.Asignaciones__servicios-icon img {
+  width: 22px;
+}
+.Asignaciones__servicios p {
+  color: var(--text);
+}
+
+.react-calendar {
+  border: none;
 }
 .react-calendar__tile--now {
-    background: #c4f7ff73;
+  background: #c4f7ff73;
 }
 .react-calendar__month-view__days__day--weekend {
-    color: inherit;
+  color: inherit;
 }
 .react-calendar__tile--active {
-    background: #a64d79 !important;
-    color: white !important;
+  background: var(--main-color) !important;
+  color: white !important;
 }
 button.react-calendar__tile.react-calendar__tile--now.react-calendar__month-view__days__day.react-calendar__month-view__days__day--weekend:hover {
-    background: #e6e6e6;
+  background: #e6e6e6;
 }
 
 .react-calendar__month-view__days__day--neighboringMonth {
-    color: #757575 !important;
+  color: #757575 !important;
 }
 
 /*Botones de navegación anual*/
 button.react-calendar__navigation__arrow.react-calendar__navigation__prev2-button {
-    display: none;
+  display: none;
 }
 
 button.react-calendar__navigation__arrow.react-calendar__navigation__next2-button {
-    display: none;
+  display: none;
 }

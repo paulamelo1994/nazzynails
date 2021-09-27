@@ -20,6 +20,7 @@ const Login = () => {
         })
     }
     const auth = async (e) => {
+        console.log('entro al evento');
         const { USERS_AUTH } = API
         e.preventDefault()
         setLoading(true)

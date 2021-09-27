@@ -4,6 +4,7 @@ const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const authorize = require('../_middleware/authorize');
 const appointmentService = require('../services/appointment.service');
+const clientService  = require('../services/client.service');
 
 // routes
 router.post('/create', authorize(), newAppointmentSchema, newAppointment);
@@ -67,11 +68,15 @@ function getAll(req, res, next) {
 
 function getAllbyDate(req, res, next) {
     var data = [];
-    appointmentService.getAllbyDate(req.user)
+    console.log("esto es lo que imprime")
+    console.log(req.query.date);
+    appointmentService.getAllbyDate(req.user, req.query.date)
         .then(appointments => {
             for (appointment of appointments){
                 var client = {
-                    "id": appointment.clientId.id
+                    "id": appointment.clientId.id,
+                    "name": appointment.clientId.name,
+                    "phoneNumber": appointment.clientId.phoneNumber
                 }
                 var serviceList = [];
                 for(service of appointment.serviceList){
@@ -85,6 +90,7 @@ function getAllbyDate(req, res, next) {
                 };
                 data.push({ 
                     "id": appointment.id,
+                    "client" : client,
                     "time": appointment.time,
                     "serviceList": serviceList,
                 })
