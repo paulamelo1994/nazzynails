@@ -15,12 +15,12 @@ const Navbar = () => {
 
     return <nav id="menu" className="navbar w-100">
         <ul className="navbar-nav mr-auto mt-lg-0 flex-row justify-content-around  w-100">
-            <Icon className="bi bi-calendar-week" link="/" label="Mis Solicitudes" name="Citas" />
-            <Icon className="bi bi-file-earmark-text" link="/reportes" label="Mis Reportes" name="Reportes" />
-            <Icon className="bi bi-people-fill" link="/clientes" label="Mis Clientes" name="Clientes" />
-            <Icon className="bi bi-list-stars" link="/servicios" label="Mis Servicios" name="Servicios" />
+            <Icon className="bi bi-calendar-week" link="/" name="Citas"/>
+            <Icon className="bi bi-file-earmark-text" link="/reportes" name="Reportes"/>
+            <Icon className="bi bi-people-fill" link="/clientes" name="Clientes"/>
+            <Icon className="bi bi-list-stars" link="/servicios" name="Servicios"/>
         </ul>
     </nav>
 }
 
-export default Navbar
+export {Navbar}

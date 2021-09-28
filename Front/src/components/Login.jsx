@@ -1,36 +1,45 @@
 import React, { useState } from 'react'
 import '../assets/css/Login.css'
 import logo from '../assets/icons/logo.png'
+import { AppContext } from '../AppContext'
+import { API } from '../ApiProvider'
+import axios from 'axios'
+import { Redirect } from 'react-router-dom'
 const Login = () => {
     const [data, setData] = useState({
         username: '',
         password: ''
     })
-    const [load, setLoad] = useState(false)
-    const [error, setError] = useState('')
-
+    const [loading, setLoading] = useState(false)
+    const { token, createCookie, setToast, tipoToast } = React.useContext(AppContext)
+    
     const handleInputChange = (e) => {
         setData({
             ...data,
             [e.target.id]: e.target.value
         })
     }
-    const auth = (e) => {
+    const auth = async (e) => {
+        console.log('entro al evento');
+        const { USERS_AUTH } = API
         e.preventDefault()
+        setLoading(true)
         try {
-            //POST A API
-            setLoad(true)
-            console.log(data)
+            const response = await axios.post(USERS_AUTH, data)
+            createCookie(response.data.token)
         } catch (error) {
-            setLoad(false)
-            setError(error)
+            setToast({ 
+                message: error.response.data.message || error.message,
+                tipo: tipoToast.ERROR
+            })
         }
+        setLoading(false)
     }
 
-    if(error){
-        return <p>Error - {error}</p>
+    if(token){
+        return <Redirect to="/" /> 
     }
-
+    
     return <form className="form__login text-center p-4" onSubmit={auth}>
         <img className="mw-50 m-0 mx-auto" src={logo} alt="Logo nazzynails" />
         <h2>Ingresar</h2>
@@ -40,20 +49,22 @@ const Login = () => {
             id="username" 
             value={data.username}
             onChange={handleInputChange} 
-            placeholder="Username o número telefónico" />
+            placeholder="Username o número telefónico" 
+            required={true}/>
             <input className="form-control p-3" 
             type="password" 
             id="password" 
             value={data.password} 
             onChange={handleInputChange} 
-            placeholder="Contraseña"/>
+            placeholder="Contraseña"
+            required={true}/>
         </div>
         <div className="form-check login__check">
             <input className="form-check-input check-lg" type="checkbox" id="session" defaultChecked={true}/>
             <label className="form-check-label" htmlFor="session">Mantener mi sesión iniciada</label>
         </div>
-        <button className="login__btn w-100" type="submit">{load ? 'load' :'Entrar'}</button>
+        <button className="login__btn w-100" type="submit">{loading ? 'Enviando...' : 'Entrar'}</button>
     </form>
 }
 
-export default Login
+export {Login}

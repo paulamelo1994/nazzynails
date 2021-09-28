@@ -1,6 +1,7 @@
 @import '~bootstrap-icons/font/bootstrap-icons';
 #menu {
     background: #f6f4f5;
+    z-index: 1;
 }
 
 ul li {

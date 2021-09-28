@@ -7,13 +7,21 @@
 .header {
     background: var(--main-color);
     color: #fff;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px;
+    box-shadow: 0 .5px 10px #000;
 }
 
 .header h2 {
     font-weight: 500;
     margin: auto;
+}
+
+@media (min-width: 600px) {
+    .App {
+        padding-bottom: 20px;
+    }
 }

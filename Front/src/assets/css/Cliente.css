@@ -1,0 +1,22 @@
+.cliente__card {
+    font-size: 14px;
+    border-bottom: 1px solid #ccc;
+    color: var(--text);
+}
+
+.cliente__card a {
+    font-size: 14px;
+}
+
+.cliente__card-telefono {
+    text-decoration: none;
+    color: green;
+    font-size: 20px;
+    display: flex;
+    margin-left: 10px;
+}
+
+h5 {
+    color: var(--main-color);
+    background: lemonchiffon;
+}

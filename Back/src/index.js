@@ -1,21 +1,25 @@
-const express = require('express')
-const cors = require('cors')
-const app = express()
+require('rootpath')();
+const express = require('express');
+const cors = require('cors');
+const app = express();
+const bodyParser = require('body-parser');
+const errorHandler = require('./_middleware/error-handler');
 
 const PORT = process.env.PORT || 5000;
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(cors())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors());
 
-// Coloca el nombre del archivo que contiene sus respectivas rutas
-const routes = [
-    'cita',
-    'usuario',
-]
+app.use('/api/users', require('./controllers/users.controller'));
+app.use('/api/clients', require('./controllers/clients.controller'));
+app.use('/api/services', require('./controllers/services.controller'));
+app.use('/api/appointments', require('./controllers/appointments.controller'));
 
-// Se importan cada una de las rutas
-app.use('/api', routes.map(r => require(`./routes/${r}`)))
+app.use(errorHandler);
+
 const server = app.listen(
     PORT,
-    () => console.log('Servidor iniciado en el puerto', PORT))
+    () => console.log('Server started at port ', PORT))
+
+module.exports = server

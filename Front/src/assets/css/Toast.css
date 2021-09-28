@@ -1,0 +1,26 @@
+.main__toast {
+    border-radius: 10px;
+    color: #fff;
+    position: fixed;
+    font-size: 25px;
+    top: 5%;
+    right: 10%;
+    left: 10%;
+    text-align: center;
+    z-index: 2;
+    opacity: 1;
+    margin: auto;
+    animation: desbanecer 3s ease-in-out;
+}
+
+@keyframes desbanecer {
+    0% {
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
