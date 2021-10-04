@@ -30,7 +30,7 @@ function authenticate(req, res, next) {
                 "id": user.id,
                 "firstName": user.firstName,
                 "lastName": user.lastName,
-                "id": user.id,
+                "enabled": user.enabled,
                 "token": user.token
             }
             ))
@@ -54,7 +54,7 @@ function register(req, res, next) {
 }
 
 function getAll(req, res, next) {
-    var data = [];
+    let data = [];
     userService.getAll()
         .then((users) => {
             for (user of users) {
@@ -62,7 +62,8 @@ function getAll(req, res, next) {
                     "id": user.id,
                     "firstName": user.firstName,
                     "lastName": user.lastName,
-                    "username": user.username
+                    "username": user.username,
+                    "enabled": user.enabled
                 });
             };
             res.json(data);})
@@ -91,7 +92,8 @@ function updateSchema(req, res, next) {
         firstName: Joi.string().empty(''),
         lastName: Joi.string().empty(''),
         username: Joi.string().empty(''),
-        password: Joi.string().min(6).empty('')
+        password: Joi.string().min(6).empty(''),
+        enabled: Joi.boolean().empty()
     });
     validateRequest(req, next, schema);
 }

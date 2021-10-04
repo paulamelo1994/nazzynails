@@ -15,7 +15,8 @@ module.exports = {
 async function getAll(user) {
     return await db.Service.findAll({
         where: {
-          userId: user.id
+          userId: user.id,
+          enabled: true
         }
       });
 }
@@ -24,7 +25,8 @@ async function getById(user, id) {
     service = await db.Service.findOne({
         where: {
           id: id,
-          userId: user.id
+          userId: user.id,
+          enabled: true
         },
       });
     if (!service) throw 'Service not found';
@@ -53,11 +55,13 @@ async function _delete(user, id) {
     service = await db.Service.findOne({
         where: {
           id: id,
-          userId: user.id
+          userId: user.id,
+          enabled: true
         },
       });
     if (!service) throw 'Service not found';
-    await service.destroy();
+    else service.enabled = false;
+    await service.save();
 }
 
 async function getService(id) {

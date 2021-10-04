@@ -15,7 +15,8 @@ module.exports = {
 async function getAll(user) {
     return await db.Client.findAll({
         where: {
-          userId: user.id
+          userId: user.id,
+          enabled: true
         }
       });
 }
@@ -24,7 +25,8 @@ async function getById(user, id) {
     client = await db.Client.findOne({
         where: {
           id: id,
-          userId: user.id
+          userId: user.id,
+          enabled: true
         },
       });
     if (!client) {throw 'Client not found';}
@@ -53,15 +55,17 @@ async function _delete(user, id) {
     client = await db.Client.findOne({
         where: {
           id: id,
-          userId: user.id
+          userId: user.id,
+          enabled: true
         },
       });
     if (!client) throw 'Client not found';
-    await client.destroy();
+    else client.enabled = false;
+    await client.save();
 }
 
 async function getClient(id) {
     const client = await db.Client.findByPk(id);
-    if (!client) throw 'Client not found';
+    if (!client || client.enabled == false) throw 'Client not found';
     return client;
 }

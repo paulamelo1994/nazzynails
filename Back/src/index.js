@@ -15,6 +15,7 @@ app.use('/api/users', require('./controllers/users.controller'));
 app.use('/api/clients', require('./controllers/clients.controller'));
 app.use('/api/services', require('./controllers/services.controller'));
 app.use('/api/appointments', require('./controllers/appointments.controller'));
+app.use('/api/reports', require('./controllers/reports.controller'));
 
 app.use(errorHandler);
 
