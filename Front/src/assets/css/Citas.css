@@ -9,17 +9,18 @@
 }
 
 .Asignaciones__card {
-  display: grid;
-  grid-template-columns: 60% 40%;
-  grid-template-rows: 100%;
-  font-size: 20px;
-  width: 100%;
   border: 1px solid var(--main-color);
   padding: 20px;
   box-sizing: content-box;
-  border-radius: 15px;
+  border-radius: 10px;
   box-shadow: 1px 1px 3px 2px rgb(0 0 0 / 20%);
   background: #a64d791f;
+  margin-bottom: 20px;
+}
+.Asignaciones__card-datos {
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: 100%;
 }
 .Asignaciones__card p {
   margin: 2px 0;
@@ -40,6 +41,11 @@
 }
 #telefono {
   color: var(--main-color);
+  text-decoration: none;
+}
+p#telefono a {
+  text-decoration: none;
+  color: var(--main-color);
 }
 
 .Asignaciones__servicios {
@@ -52,6 +58,27 @@
 }
 .Asignaciones__servicios p {
   color: var(--text);
+}
+
+.Asignaciones__card-buttons {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin: 15px auto;
+  margin-bottom: 0px;
+}
+
+.Asignaciones__card-buttons button {
+  background: var(--secondary-color);
+  border: none;
+  color: white;
+  border-radius: 20px;
+  width: 100px;
+  height: 35px;
+  font-size: 14px;
+}
+.Asignaciones__card-buttons i {
+  margin-right: 10px;
 }
 
 .react-calendar {

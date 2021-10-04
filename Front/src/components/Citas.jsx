@@ -16,6 +16,7 @@ const Citas = () => {
     const [loading, setLoading]         = React.useState(false)
     const { token, setToast, tipoToast } = React.useContext(AppContext)
     const [appointment, setAppointments] = React.useState([])
+    // const [change, setChange] = React.useState(0)
 
     const getStringDate = (date, event)=>{
         let dateString ='';
@@ -62,7 +63,6 @@ const Citas = () => {
         return <Loader />
     }
 
-
     return (
         <div>
             <div className="citas__calendar">
@@ -70,18 +70,16 @@ const Citas = () => {
                     onChange={setDate}
                     value={date}
                 />
-                {console.log(date)}
             </div>
             <div className="citas__asignaciones">
                 {
                     appointment.map((item, index)=>{
-                        console.log(item);
-                        let time = "";
                         return <Asignaciones 
+                            id= {item.id}
                             nombre= {item.client.name}
-                            hora=""
+                            hora={item.time}
                             telefono={item.client.phoneNumber}
-                            servicios={[{"id":1,"name":"Uñas en Acrílico","length":20000,"enable":true,"price":65000}]} />
+                            servicios={item.serviceList} />
                     })
                 }
                 

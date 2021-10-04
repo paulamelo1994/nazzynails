@@ -37,7 +37,7 @@ h3.Reportes__tarjeta-titulo::after {
   justify-content: space-around;
 }
 select {
-  width: 180px;
+  width: 150px;
   height: 40px;
   /* border: red; */
   border-color: var(--main-color);
