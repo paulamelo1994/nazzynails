@@ -31,7 +31,7 @@ function newClient(req, res, next) {
 }
 
 function getAll(req, res, next) {
-    var data = [];
+    let data = [];
     clientService.getAll(req.user)
         .then(clients => {
             for (client of clients) {
@@ -67,7 +67,8 @@ function updateSchema(req, res, next) {
         name: Joi.string().empty(''),
         address: Joi.string().empty(''),
         email: Joi.string().empty(''),
-        phoneNumber: Joi.string().empty('')
+        phoneNumber: Joi.string().empty(''),
+        enabled: Joi.boolean().empty('')
     });
     validateRequest(req, next, schema);
 }

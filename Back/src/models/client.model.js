@@ -8,7 +8,8 @@ function model(sequelize) {
         name: { type: DataTypes.STRING, allowNull: false },
         address: { type: DataTypes.STRING, allowNull: false },
         email: { type: DataTypes.STRING, allowNull: false },
-        phoneNumber: { type: DataTypes.STRING, allowNull: false }
+        phoneNumber: { type: DataTypes.STRING, allowNull: false },
+        enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true}
     };
 
     return sequelize.define('Client', attributes);
