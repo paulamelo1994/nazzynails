@@ -16,6 +16,7 @@ const Form = ({ history, form, pathNew, pathUpdate, title}) => {
     
     React.useEffect(()=> {
         const getData = async () => {
+            console.log('el console')
             const headers = {
                 Authorization: `Bearer ${token}`
             }  

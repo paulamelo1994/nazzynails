@@ -15,54 +15,27 @@ import { Form } from './Form';
 import { ClienteList } from './ClienteList';
 import { ServiceList } from './ServiceList';
 import { Toast } from './Toast';
-
-<<<<<<< HEAD
-import Login from './Login'
-import Navbar from './Navbar';
-import Citas from './Citas';
-=======
->>>>>>> main
+import { formCita } from '../inputCita';
+import Reportes from './Reportes';
 
 const App = () => {
-  const { CLIENTS, CLIENTS_NEW, SERVICES, SERVICES_NEW } = API
+  const { CLIENTS, CLIENTS_NEW, SERVICES, SERVICES_NEW, APPOINTMENTS, APPOINTMENTS_NEW } = API
   const location = useLocation()
   const history = useHistory()
   const { token, toast } = React.useContext(AppContext)
   const loginPath = location.pathname === '/login'
   const labels = {
-<<<<<<< HEAD
-    '': 'Mis Citas',
-    'reportes': 'Mis Reportes',
-    'clientes': 'Mis Clientes',
-    'servicios': 'Mis Servicios',
-=======
     '/': 'Mis Citas',
+    '/citas/form':'Nueva Cita',
     '/reportes': 'Mis Reportes',
     '/clientes': 'Mis Clientes',
     '/clientes/form': 'Cliente',
     '/servicios': 'Mis Servicios'
->>>>>>> main
   }
   
   const Header = () => (
     <header className="header" href="#">
       <img src={logo} alt="logo header" width="80px" />
-<<<<<<< HEAD
-      <h2 className="display-6">{labels[location.pathname.substring(1)]}</h2>
-    </header>
-  )
-
-  return <div className="App" style={{ background: !loginPath && 'var(--main-color' }}>
-    {loginPath && <Header />}
-    {loginPath && <Navbar />}
-
-    <Switch>
-      <Route exact path='/login'>
-        <Login />
-      </Route>
-      <Route exact path='/'><Citas /></Route>
-    </Switch>
-=======
       <h2 className="display-6">{labels[location.pathname]}</h2>
     </header>
   )
@@ -74,13 +47,32 @@ const App = () => {
     {toast.message && <Toast />}
     {!loginPath && <Header />}
     {!loginPath && <Navbar />}
-    <div className="container" style={{margin: 'auto', display: 'flex',justifyContent: 'center'}}>
+    <div className="container" >
       <Switch>
         <Route exact path='/login'>
           <Login />
         </Route>
         <Route exact path='/'>
           <Citas />
+          <ButtonAction link='/citas/form' 
+          style={{
+            position: 'fixed', 
+            bottom: '20%',
+            right: '10%',
+            fontSize: '60px',
+            background: '#fff'
+          }} />
+        </Route>
+        <Route exact path='/citas/form'>
+          <Form
+          title="Cita"
+          history={history} 
+          form={formCita}
+          pathNew={APPOINTMENTS_NEW}
+          pathUpdate={APPOINTMENTS}/>
+        </Route>
+        <Route exact path='/reportes'>
+          <Reportes />
         </Route>
         <Route exact path='/clientes'>
           <ClienteList />
@@ -123,7 +115,6 @@ const App = () => {
       </Switch>
     </div>
     { !token && <Redirect to="/login" />}
->>>>>>> main
   </div>
 }
 
