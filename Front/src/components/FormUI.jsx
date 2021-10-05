@@ -107,7 +107,7 @@ const FormUI = ({ form ,
                         id="selections-example"
                         labelKey="name"
                         onChange={text => { setValue(i.name, text.pop().id); }}
-                        options={dataSelect[i.name]}
+                        options={dataSelect[i.name] || []}
                         placeholder={i.placeholder}
                     />
                     : <input className="form-control p-3 border-maroon"
