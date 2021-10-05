@@ -15,28 +15,56 @@ module.exports = {
 };
 
 async function getAll(user) {
-  let arrayResult = [];
+    var arrayResult = [];
     listAppointments = await db.Appointment.findAll({
         where: {
-          userId: user.id,
-          enabled: true
+            userId: user.id
         }
-      });
-    for(const appointment of await listAppointments){
-      loadClient = await db.Client.findOne({where:{id: appointment.clientId}});
-      appointment.clientId = await loadClient;
-  
-      let serviceList = []
-      for (const service of await appointment.serviceList) {
-        buscarServicio = await db.Service.findOne({
-          where:{
-            id: service
-          }
-        })
-        if(buscarServicio){serviceList.push(buscarServicio)}
-      }
-      appointment.serviceList = await serviceList;
-      arrayResult.push(await appointment);
+    });
+    for (const appointment of await listAppointments) {
+        loadClient = await db.Client.findOne({ where: { id: appointment.clientId } });
+        appointment.clientId = await loadClient;
+
+        var serviceList = []
+        for (const service of await appointment.serviceList) {
+            buscarServicio = await db.Service.findOne({
+                where: {
+                    id: service
+                }
+            })
+            if (buscarServicio) { serviceList.push(buscarServicio) }
+        }
+        appointment.serviceList = await serviceList;
+        arrayResult.push(await appointment);
+    }
+    return await arrayResult;
+}
+
+async function getAllbyDate(user, date) {
+    var arrayResult = [];
+    listAppointments = await db.Appointment.findAll({
+        where: {
+            userId: user.id,
+            time: {
+                [Op.between]: [date + " 00:00:00", date + " 23:59:59"] }
+        }
+    });
+    for (const appointment of await listAppointments) {
+        loadClient = await db.Client.findOne({ where: { id: appointment.clientId } });
+        appointment.clientId = await loadClient;
+        console.log(appointment.clientId)
+
+        let serviceList = []
+        for (const service of await appointment.serviceList) {
+            buscarServicio = await db.Service.findOne({
+                where: {
+                    id: service
+                }
+            })
+            if (buscarServicio) { serviceList.push(buscarServicio) }
+        }
+        appointment.serviceList = await serviceList;
+        arrayResult.push(await appointment);
     }
     return await arrayResult;
 }
@@ -44,23 +72,23 @@ async function getAll(user) {
 async function getById(user, id) {
     appointment = await db.Appointment.findOne({
         where: {
-          id: id,
-          userId: user.id,
-          enabled: true
+            id: id,
+            userId: user.id,
+            enabled: true
         },
-      });
-    if (!appointment) {throw 'Appointment not found';}
-    loadClient = await db.Client.findOne({where:{id: appointment.clientId}});
+    });
+    if (!appointment) { throw 'Appointment not found'; }
+    loadClient = await db.Client.findOne({ where: { id: appointment.clientId } });
     appointment.clientId = await loadClient;
 
     let serviceList = []
     for (const service of await appointment.serviceList) {
-      buscarServicio = await db.Service.findOne({
-        where:{
-          id: service
-        }
-      })
-      if(buscarServicio){serviceList.push(buscarServicio)}
+        buscarServicio = await db.Service.findOne({
+            where: {
+                id: service
+            }
+        })
+        if (buscarServicio) { serviceList.push(buscarServicio) }
     }
     appointment.serviceList = await serviceList;
     return await appointment;
@@ -71,51 +99,51 @@ async function create(user, params) {
     params.appointmentIsDone = false;
 
     searchClient = await db.Client.findOne({
-      where: {
-        id: params.clientId,
-        enabled: true
-      }
+        where: {
+            id: params.clientId,
+            enabled: true
+        }
     });
-    if (!searchClient) {throw 'Client not found';}
+    if (!searchClient) { throw 'Client not found'; }
 
     for (const service of params.serviceList) {
-      buscarServicio = await db.Service.findOne({
-        where:{
-          id: service,
-          enabled: true
-        }
-      })
-      if(!buscarServicio){throw 'Service ' + service + ' not found';}
+        buscarServicio = await db.Service.findOne({
+            where: {
+                id: service,
+                enabled: true
+            }
+        })
+        if (!buscarServicio) { throw 'Service ' + service + ' not found'; }
     }
-    
+
     await db.Appointment.create(params);
 }
 
 async function update(user, id, params) {
     appointment = await db.Appointment.findOne({
         where: {
-          id: id,
-          userId: user.id
+            id: id,
+            userId: user.id
         },
-      });
+    });
     if (!appointment) throw 'Appointment not found';
 
     searchClient = await db.Client.findOne({
-      where: {
-        id: params.clientId,
-        enabled: true
-      }
-    });
-    if (!searchClient) {throw 'Client not found';}
-    
-    for (const service of params.serviceList) {
-      buscarServicio = await db.Client.findOne({
-        where:{
-          id: service,
-          enabled: true
+        where: {
+            id: params.clientId,
+            enabled: true
         }
-      })
-      if(!buscarServicio){throw 'Service ' + service + ' not found';}
+    });
+    if (!searchClient) { throw 'Client not found'; }
+
+    for (const service of params.serviceList) {
+        buscarServicio = await db.Client.findOne({
+            where: {
+                id: service,
+                enabled: true
+            }
+        })
+        if (!buscarServicio) { throw 'Service ' + service + ' not found'; }
     }
     Object.assign(appointment, params);
     await appointment.save();
@@ -125,11 +153,11 @@ async function update(user, id, params) {
 async function _delete(user, id) {
     appointment = await db.Appointment.findOne({
         where: {
-          id: id,
-          userId: user.id,
-          enabled: true
+            id: id,
+            userId: user.id,
+            enabled: true
         },
-      });
+    });
     if (!appointment) throw 'Appointment not found';
     else appointment.enabled = false;
     await appointment.save();
@@ -137,11 +165,11 @@ async function _delete(user, id) {
 
 async function getAppointment(id) {
     const appointment = await db.Appointment.findByPk({
-      where: {
-        id: id,
-        userId: user.id,
-        enabled: true
-      },
+        where: {
+            id: id,
+            userId: user.id,
+            enabled: true
+        },
     });
     if (!appointment) throw 'Appointment not found';
     return appointment;
