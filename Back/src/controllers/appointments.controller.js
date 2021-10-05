@@ -9,10 +9,10 @@ const clientService = require('../services/client.service');
 // routes
 router.post('/create', authorize(), newAppointmentSchema, newAppointment);
 router.get('/', authorize(), getAll);
+router.get('/date',authorize(),getAllbyDate);
 router.get('/:id', authorize(), getById);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
-router.get('/date', authorize(),getAllbyDate);
 
 module.exports = router;
 
@@ -79,33 +79,33 @@ function getAllbyDate(req, res, next) {
     console.log("esto es lo que imprime")
     console.log(req.query.date);
     appointmentService.getAllbyDate(req.user, req.query.date)
-        .then(appointments => {
-            for (appointment of appointments) {
-                var client = {
-                    "id": appointment.clientId.id,
-                    "name": appointment.clientId.name,
-                    "phoneNumber": appointment.clientId.phoneNumber
-                }
-                var serviceList = [];
-                for (service of appointment.serviceList) {
-                    serviceList.push({
-                        "id": service.id,
-                        "name": service.name,
-                        "length": service.length,
-                        "enable": service.enable,
-                        "price": service.price
-                    });
-                };
-                data.push({
-                    "id": appointment.id,
-                    "client": client,
-                    "time": appointment.time,
-                    "serviceList": serviceList,
-                })
+    .then(appointments => {
+        for (appointment of appointments) {
+            var client = {
+                "id": appointment.clientId.id,
+                "name": appointment.clientId.name,
+                "phoneNumber": appointment.clientId.phoneNumber
+            }
+            var serviceList = [];
+            for (service of appointment.serviceList) {
+                serviceList.push({
+                    "id": service.id,
+                    "name": service.name,
+                    "length": service.length,
+                    "enable": service.enable,
+                    "price": service.price
+                });
             };
-            res.json(data);
-        })
-        .catch(next);
+            data.push({
+                "id": appointment.id,
+                "client": client,
+                "time": appointment.time,
+                "serviceList": serviceList,
+            })
+        };
+        res.json(data);
+    })
+    .catch(next);
 }
 
 function getById(req, res, next) {

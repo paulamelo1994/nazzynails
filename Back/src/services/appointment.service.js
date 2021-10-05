@@ -7,11 +7,12 @@ const { Op } = require('sequelize');
 const e = require('express');
 
 module.exports = {
-    getAll,
-    getById,
-    create,
-    update,
-    delete: _delete
+  getAll,
+  getAllbyDate,
+  getById,
+  create,
+  update,
+  delete: _delete
 };
 
 async function getAll(user) {
