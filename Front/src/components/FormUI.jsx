@@ -106,7 +106,8 @@ const FormUI = ({ form ,
                     ? <Typeahead
                         id="selections-example"
                         labelKey="name"
-                        onChange={text => { setValue(i.name, text.pop().id); }}
+                        onChange={text => { setValue(i.name, i.multiple ? text.map(t => t.id): text.pop().id); }}
+                        multiple={i.multiple ? true : false}
                         options={dataSelect[i.name] || []}
                         placeholder={i.placeholder}
                     />

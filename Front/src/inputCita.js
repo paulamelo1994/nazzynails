@@ -25,6 +25,7 @@ const formCita = [{
         name: 'servicios',
         placeholder: 'servicio',
         type: 'select',
+        multiple: true,
         url: API.SERVICES,
         prop: 'name'
     }
