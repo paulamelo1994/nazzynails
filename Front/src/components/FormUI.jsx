@@ -1,6 +1,8 @@
 import React from 'react'
 import { useForm, useWatch } from "react-hook-form";
 import { AppContext } from '../AppContext';
+import { Typeahead } from 'react-bootstrap-typeahead'
+import axios from 'axios';
 import '../assets/css/Form.css'
 import { Loader } from './Loader';
 
@@ -22,13 +24,15 @@ const FormUI = ({ form ,
     title
 }) => {
     const [dataForm] = React.useState(form || [])
+    const [dataSelect, setDataSelect] = React.useState([])
     const [loading, setLoading] = React.useState(false)
-    const { setToast, tipoToast } = React.useContext(AppContext)
+    const { token, setToast, tipoToast } = React.useContext(AppContext)
     const {
         register, 
         formState: {errors}, 
         handleSubmit,
-        control
+        control,
+        setValue
     } = useForm()
     
     const IsolateReRender= ({format, name, defaultValue, control}) => {
@@ -41,6 +45,26 @@ const FormUI = ({ form ,
         return  <div className="input-group-prepend">
             <span className="input-group-text h-100" id="basic-addon2">{format(input)}</span>
         </div>
+    }
+    
+    const getOptions = async (url, prop) => {
+        if(!dataSelect.length){
+            const headers = {
+                Authorization: `Bearer ${token}`
+            }  
+            setLoading(true)
+            try {
+                const response = await axios.get(url, { headers })
+                setLoading(false)
+                setDataSelect(response.data.map(data => ({id: data.id, name:data[prop]})))
+            } catch (error) {
+                setToast({ 
+                    message: error.response?.data.message || error.message,
+                    tipo: tipoToast.ERROR
+                })
+                setLoading(false)
+            }
+        }
     }
 
     const onSubmit = async data => {
@@ -76,6 +100,15 @@ const FormUI = ({ form ,
                         {...register(i.name, i.options)}/>
                         <label className="form-check-label" htmlFor={i.name}>{i.placeholder}</label>
                     </div>
+                    : i.type === 'select'
+                    ? getOptions(i.url, i.prop) &&
+                    <Typeahead
+                        id="selections-example"
+                        labelKey="name"
+                        onChange={text => { setValue(i.name, text.pop().id); }}
+                        options={dataSelect}
+                        placeholder={i.placeholder}
+                    />
                     : <input className="form-control p-3 border-maroon"
                         style={{boxShadow: errors[i.name] && ' 0 0 0 0.25rem lightcoral'}} 
                         placeholder={i.placeholder}
