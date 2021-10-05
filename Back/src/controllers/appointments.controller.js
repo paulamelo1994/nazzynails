@@ -12,6 +12,7 @@ router.get('/', authorize(), getAll);
 router.get('/:id', authorize(), getById);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
+router.get('/date', authorize(),getAllbyDate);
 
 module.exports = router;
 
