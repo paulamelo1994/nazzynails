@@ -24,7 +24,7 @@ const FormUI = ({ form ,
     title
 }) => {
     const [dataForm] = React.useState(form || [])
-    const [dataSelect, setDataSelect] = React.useState([])
+    const [dataSelect, setDataSelect] = React.useState({})
     const [loading, setLoading] = React.useState(false)
     const { token, setToast, tipoToast } = React.useContext(AppContext)
     const {
@@ -47,25 +47,27 @@ const FormUI = ({ form ,
         </div>
     }
     
-    const getOptions = async (url, prop) => {
-        if(!dataSelect.length){
+    React.useEffect(() => {
+        const getOptions = async (url, prop, name) => {
             const headers = {
                 Authorization: `Bearer ${token}`
             }  
             setLoading(true)
             try {
-                const response = await axios.get(url, { headers })
-                setLoading(false)
-                setDataSelect(response.data.map(data => ({id: data.id, name:data[prop]})))
-            } catch (error) {
-                setToast({ 
-                    message: error.response?.data.message || error.message,
-                    tipo: tipoToast.ERROR
-                })
-                setLoading(false)
-            }
+                    const response = await axios.get(url, { headers })
+                    setDataSelect(d => ({...d, [name] : response.data.map(data => ({id: data.id, name:data[prop]}))}))
+                } catch (error) {
+                    setDataSelect(d => ({...d, [name] : [[]]}))
+                    setToast({ 
+                        message: error.response?.data.message || error.message,
+                        tipo: tipoToast.ERROR
+                    })
+                }
+            setLoading(false)
         }
-    }
+        const selects = dataForm.filter((i) => i.type === 'select')
+        selects.forEach(async (i) => await getOptions(i.url, i.prop, i.name)) 
+    }, [token, setToast, tipoToast.ERROR, dataForm])
 
     const onSubmit = async data => {
         setLoading(true)
@@ -101,12 +103,11 @@ const FormUI = ({ form ,
                         <label className="form-check-label" htmlFor={i.name}>{i.placeholder}</label>
                     </div>
                     : i.type === 'select'
-                    ? getOptions(i.url, i.prop) &&
-                    <Typeahead
+                    ? <Typeahead
                         id="selections-example"
                         labelKey="name"
                         onChange={text => { setValue(i.name, text.pop().id); }}
-                        options={dataSelect}
+                        options={dataSelect[i.name]}
                         placeholder={i.placeholder}
                     />
                     : <input className="form-control p-3 border-maroon"
