@@ -1,6 +1,8 @@
 import React from 'react'
 import { useForm, useWatch } from "react-hook-form";
 import { AppContext } from '../AppContext';
+import { Typeahead } from 'react-bootstrap-typeahead'
+import axios from 'axios';
 import '../assets/css/Form.css'
 import { Loader } from './Loader';
 
@@ -22,13 +24,15 @@ const FormUI = ({ form ,
     title
 }) => {
     const [dataForm] = React.useState(form || [])
+    const [dataSelect, setDataSelect] = React.useState({})
     const [loading, setLoading] = React.useState(false)
-    const { setToast, tipoToast } = React.useContext(AppContext)
+    const { token, setToast, tipoToast } = React.useContext(AppContext)
     const {
         register, 
         formState: {errors}, 
         handleSubmit,
-        control
+        control,
+        setValue
     } = useForm()
     
     const IsolateReRender= ({format, name, defaultValue, control}) => {
@@ -42,6 +46,28 @@ const FormUI = ({ form ,
             <span className="input-group-text h-100" id="basic-addon2">{format(input)}</span>
         </div>
     }
+    
+    React.useEffect(() => {
+        const getOptions = async (url, prop, name) => {
+            const headers = {
+                Authorization: `Bearer ${token}`
+            }  
+            setLoading(true)
+            try {
+                    const response = await axios.get(url, { headers })
+                    setDataSelect(d => ({...d, [name] : response.data.map(data => ({id: data.id, name:data[prop]}))}))
+                } catch (error) {
+                    setDataSelect(d => ({...d, [name] : [[]]}))
+                    setToast({ 
+                        message: error.response?.data.message || error.message,
+                        tipo: tipoToast.ERROR
+                    })
+                }
+            setLoading(false)
+        }
+        const selects = dataForm.filter((i) => i.type === 'select')
+        selects.forEach(async (i) => await getOptions(i.url, i.prop, i.name)) 
+    }, [token, setToast, tipoToast.ERROR, dataForm])
 
     const onSubmit = async data => {
         setLoading(true)
@@ -76,6 +102,14 @@ const FormUI = ({ form ,
                         {...register(i.name, i.options)}/>
                         <label className="form-check-label" htmlFor={i.name}>{i.placeholder}</label>
                     </div>
+                    : i.type === 'select'
+                    ? <Typeahead
+                        id="selections-example"
+                        labelKey="name"
+                        onChange={text => { setValue(i.name, text.pop().id); }}
+                        options={dataSelect[i.name] || []}
+                        placeholder={i.placeholder}
+                    />
                     : <input className="form-control p-3 border-maroon"
                         style={{boxShadow: errors[i.name] && ' 0 0 0 0.25rem lightcoral'}} 
                         placeholder={i.placeholder}

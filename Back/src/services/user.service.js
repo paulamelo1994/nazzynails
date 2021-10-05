@@ -23,7 +23,9 @@ async function authenticate({ username, password }) {
 }
 
 async function getAll() {
-    return await db.User.findAll();
+    return await db.User.findAll({
+        where: { enabled: true }
+    });
 }
 
 async function getById(id) {
@@ -67,12 +69,13 @@ async function update(id, params) {
 
 async function _delete(id) {
     const user = await getUser(id);
-    await user.destroy();
+    user.enabled = false;
+    await user.save();
 }
 
 async function getUser(id) {
     const user = await db.User.findByPk(id);
-    if (!user) throw 'User not found';
+    if (!user || user.enabled == false) throw 'User not found';
     return user;
 }
 

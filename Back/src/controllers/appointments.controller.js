@@ -4,12 +4,11 @@ const Joi = require('joi');
 const validateRequest = require('../_middleware/validate-request');
 const authorize = require('../_middleware/authorize');
 const appointmentService = require('../services/appointment.service');
-const clientService  = require('../services/client.service');
+const clientService = require('../services/client.service');
 
 // routes
 router.post('/create', authorize(), newAppointmentSchema, newAppointment);
 router.get('/', authorize(), getAll);
-router.get('/date', authorize(), getAllbyDate);
 router.get('/:id', authorize(), getById);
 router.put('/:id', authorize(), updateSchema, update);
 router.delete('/:id', authorize(), _delete);
@@ -25,26 +24,33 @@ function newAppointmentSchema(req, res, next) {
     validateRequest(req, next, schema);
 }
 
+function appointmentDateSchema(req, res, next) {
+    const schema = Joi.object({
+        date: Joi.date().required()
+    });
+    validateRequest(req, next, schema);
+}
+
 function newAppointment(req, res, next) {
     appointmentService.create(req.user, req.body)
-        .then(() => res.json({message: 'Appointment created successful' }))
+        .then(() => res.json({ message: 'Appointment created successful' }))
         .catch(next);
 }
 
 function getAll(req, res, next) {
-    var data = []
+    let data = []
     appointmentService.getAll(req.user)
         .then(appointments => {
             for (appointment of appointments) {
-                var client = {
+                let client = {
                     "id": appointment.clientId.id,
                     "name": appointment.clientId.name,
                     "address": appointment.clientId.address,
                     "email": appointment.clientId.email,
                     "phoneNumber": appointment.clientId.phoneNumber
                 }
-                var serviceList = [];
-                for(service of appointment.serviceList){
+                let serviceList = [];
+                for (service of appointment.serviceList) {
                     serviceList.push({
                         "id": service.id,
                         "name": service.name,
@@ -53,7 +59,7 @@ function getAll(req, res, next) {
                         "price": service.price
                     });
                 };
-                data.push({ 
+                data.push({
                     "id": appointment.id,
                     "name": appointment.name,
                     "client": client,
@@ -62,7 +68,8 @@ function getAll(req, res, next) {
                     "appointmentIsDone": appointment.appointmentIsDone,
                 })
             };
-            res.json(data);})
+            res.json(data);
+        })
         .catch(next);
 }
 
@@ -72,14 +79,14 @@ function getAllbyDate(req, res, next) {
     console.log(req.query.date);
     appointmentService.getAllbyDate(req.user, req.query.date)
         .then(appointments => {
-            for (appointment of appointments){
+            for (appointment of appointments) {
                 var client = {
                     "id": appointment.clientId.id,
                     "name": appointment.clientId.name,
                     "phoneNumber": appointment.clientId.phoneNumber
                 }
                 var serviceList = [];
-                for(service of appointment.serviceList){
+                for (service of appointment.serviceList) {
                     serviceList.push({
                         "id": service.id,
                         "name": service.name,
@@ -88,14 +95,15 @@ function getAllbyDate(req, res, next) {
                         "price": service.price
                     });
                 };
-                data.push({ 
+                data.push({
                     "id": appointment.id,
-                    "client" : client,
+                    "client": client,
                     "time": appointment.time,
                     "serviceList": serviceList,
                 })
             };
-            res.json(data);})
+            res.json(data);
+        })
         .catch(next);
 }
 
@@ -112,7 +120,8 @@ function updateSchema(req, res, next) {
         clientId: Joi.number().integer().empty(),
         time: Joi.date().empty(),
         serviceList: Joi.array().items(Joi.number().integer()).empty(),
-        appointmentIsDone: Joi.bool().empty()
+        appointmentIsDone: Joi.bool().empty(),
+        enabled: Joi.boolean().empty()
     });
     validateRequest(req, next, schema);
 }
