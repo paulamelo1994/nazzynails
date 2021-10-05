@@ -26,7 +26,7 @@ const App = () => {
   const loginPath = location.pathname === '/login'
   const labels = {
     '/': 'Mis Citas',
-    '/citas/form':'Nueva Cita', //paula
+    '/citas/form':'Nueva Cita', //paula funcionando
     '/reportes': 'Mis Reportes',
     '/clientes': 'Mis Clientes',
     '/clientes/form': 'Cliente',
