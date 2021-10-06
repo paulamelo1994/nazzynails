@@ -1,7 +1,8 @@
 import React from "react";
 import axios from 'axios'
 import { API } from '../ApiProvider'
-import { AppContext } from '../AppContext' 
+import { AppContext } from '../AppContext'
+import { Link } from "react-router-dom";
 
 
 import esmalte from '../assets/icons/botella-esmalte.svg'
@@ -61,7 +62,9 @@ const Asignaciones = (props)=>{
                 {props.enabled === true && (
                     <React.Fragment>
                         <button onClick={()=>{delete_appointment(props.id)}}><i className="bi bi-x-lg"></i>Cancelar</button>
-                        <button><i className="bi bi-pencil-fill"></i>Actualizar</button>
+                        <Link to={`citas/form?id=${props.id}`} className="button-asignaciones">
+                            <button><i className="bi bi-pencil-fill"></i>Actualizar</button>
+                        </Link>
                         <button><i className="bi bi-check2"></i>Cumplida</button>
                     </React.Fragment>
                 )

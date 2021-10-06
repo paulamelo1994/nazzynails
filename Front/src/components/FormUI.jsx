@@ -56,6 +56,8 @@ const FormUI = ({ form ,
             try {
                     const response = await axios.get(url, { headers })
                     setDataSelect(d => ({...d, [name] : response.data.map(data => ({id: data.id, name:data[prop]}))}))
+                    // console.log(form);
+                    // console.log('setDataSelect',dataSelect)
                 } catch (error) {
                     setDataSelect(d => ({...d, [name] : [[]]}))
                     setToast({ 
@@ -63,6 +65,7 @@ const FormUI = ({ form ,
                         tipo: tipoToast.ERROR
                     })
                 }
+                
             setLoading(false)
         }
         const selects = dataForm.filter((i) => i.type === 'select')
@@ -87,9 +90,38 @@ const FormUI = ({ form ,
         setLoading(false)
     }
 
+    const processParams=(items,name)=>{
+        let params = [];
+        items.forEach((item,index) =>{
+            if(item.name == name){
+                // multiples
+                if(Array.isArray(item.options.value)){
+                    item.options.value.forEach(item=>{
+                        params.push({
+                            id:item.id,
+                            name: item.name
+                        })
+                    })
+                    return item.options.value;
+                }else{ // selects
+                    params.push({
+                        id: item.options.value.id, 
+                        name: item.options.value.name
+                    });
+                }
+            }
+        })
+        // console.log('params',params);
+        return params;
+        // return [{id: 1, name: "Daniela Angulo"}]
+        
+        
+    }
+
     if(loading){
         return <Loader />
     }
+    const selected = null;
     return <form className="form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <h2 className="mb-4">{title}</h2>
         { dataForm.map((i, key) => {
@@ -112,6 +144,12 @@ const FormUI = ({ form ,
                             multiple={i.multiple ? true : false}
                             options={dataSelect[i.name] || []}
                             placeholder={i.placeholder}
+                            defaultSelected={ // [{id: 1, name: "Daniela Angulo"}]
+
+                                processParams(form,i.name)
+                                
+                            }
+                            
                         />
                     </>
                     :   <>
