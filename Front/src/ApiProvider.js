@@ -1,5 +1,6 @@
 require('dotenv').config({ path: '../.env' })
-const URL = process.env.API || 'http://192.168.10.17:5000/api'
+const URL = process.env.API || 'http://localhost:5000/api'
+// const URL = process.env.API || 'http://192.168.10.17:5000/api'
 
 const API = {
     USERS: 'users/',
