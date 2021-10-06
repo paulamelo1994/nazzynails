@@ -101,6 +101,7 @@ function getAllbyDate(req, res, next) {
                 "client": client,
                 "time": appointment.time,
                 "serviceList": serviceList,
+                "enabled" : appointment.enabled
             })
         };
         res.json(data);

@@ -1,5 +1,6 @@
 import { API } from './ApiProvider'
 const formCita = [{
+        label: "Seleccione el cliente",
         name: 'clientId',
         type: 'select',
         placeholder: 'Seleccione cliente',
@@ -7,21 +8,17 @@ const formCita = [{
         prop: 'name'
     },
     {
-        name: 'fecha',
-        placeholder: 'Fecha',
-        type: 'date',
+        label: "Fecha y hora",
+        name: 'time',
+        placeholder: 'Fecha y hora',
+        type: 'datetime-local',
         options: {
             required: "Este campo es requerido",
 
         }
     },
     {
-        name: 'hora',
-        placeholder: 'Hora',
-        type: 'time',
-        options: {}
-    },
-    {
+        label: "Seleccione los servicios",
         name: 'serviceList',
         placeholder: 'servicio',
         type: 'select',

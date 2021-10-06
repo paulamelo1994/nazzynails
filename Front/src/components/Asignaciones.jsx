@@ -9,7 +9,7 @@ import esmalte from '../assets/icons/botella-esmalte.svg'
 const Asignaciones = (props)=>{
 
     const { token, setToast, tipoToast } = React.useContext(AppContext)
-    const [appointment, setAppointments] = React.useState([])
+    // const [appointment, setAppointments] = React.useState([])
 
     let horas= new Date(props.hora).getHours();
     let minutos = new Date(props.hora).getMinutes();
@@ -30,7 +30,7 @@ const Asignaciones = (props)=>{
         }
         try {
             const response = await axios.delete(APPOINTMENTS+id, { headers })
-            setAppointments(response.data)
+            props.cambio();
         } catch (error) {
             setToast({
                 message: error.response?.data.message || error.message,
@@ -58,9 +58,19 @@ const Asignaciones = (props)=>{
             </div>
             </div>
             <div className="Asignaciones__card-buttons">
-                <button onClick={()=>{delete_appointment(props.id)}}><i className="bi bi-x-lg"></i>Cancelar</button>
-                <button><i className="bi bi-pencil-fill"></i>Actualizar</button>
-                <button><i className="bi bi-check2"></i>Cumplida</button>
+                {props.enabled === true && (
+                    <React.Fragment>
+                        <button onClick={()=>{delete_appointment(props.id)}}><i className="bi bi-x-lg"></i>Cancelar</button>
+                        <button><i className="bi bi-pencil-fill"></i>Actualizar</button>
+                        <button><i className="bi bi-check2"></i>Cumplida</button>
+                    </React.Fragment>
+                )
+                }
+                {props.enabled===false && (
+                        <span>Cita cancelada</span>
+                    )
+                }
+                
 
             </div>
         </div>

@@ -69,7 +69,13 @@ const App = () => {
           history={history} 
           form={formCita}
           pathNew={APPOINTMENTS_NEW}
-          pathUpdate={APPOINTMENTS}/>
+          pathUpdate={APPOINTMENTS}
+          funcion = {
+            ()=>{
+              console.log("funcion")
+            }
+          }
+          />
         </Route>
         <Route exact path='/reportes'>
           <Reportes />

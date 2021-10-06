@@ -53,8 +53,6 @@ async function getAllbyDate(user, date) {
     for (const appointment of await listAppointments) {
         loadClient = await db.Client.findOne({ where: { id: appointment.clientId } });
         appointment.clientId = await loadClient;
-        console.log(appointment.clientId)
-
         let serviceList = []
         for (const service of await appointment.serviceList) {
             buscarServicio = await db.Service.findOne({
@@ -159,6 +157,7 @@ async function _delete(user, id) {
             enabled: true
         },
     });
+    console.log(appointment)
     if (!appointment) throw 'Appointment not found';
     else appointment.enabled = false;
     await appointment.save();

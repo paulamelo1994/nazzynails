@@ -8,7 +8,7 @@ const { func } = require('joi');
 
 // routes
 router.get('/generate', authorize(), reportDateSchema, createReport);
-router.get('/generateWeek', authorize(), reportDateSchema, getWeekData);
+router.post('/generateWeek', authorize(), reportDateSchema, getWeekData);
 router.delete('/delete', authorize(), deleteReportSchema, deleteReport);
 
 module.exports = router;

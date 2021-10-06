@@ -18,7 +18,9 @@ const Citas = () => {
     const [appointment, setAppointments] = React.useState([])
     // const [change, setChange] = React.useState(0)
 
-    
+    // const state = {
+    //     appointment: []
+    // }
 
 
 
@@ -40,8 +42,33 @@ const Citas = () => {
        return dateString;
     }
 
+    const cambioAsignaciones = ()=>{
+        console.log("cambio");
+        setAppointments([]);
+        getAppointments();
+    }
+    const getAppointments = async() => {
+        let fecha = getStringDate(date);
+        //console.log('fecha:');
+        // console.log(fecha);
+        const { APPOINTMENTS_BY_DATE } = API
+        const headers = {
+            Authorization: `Bearer ${token}`
+        }
+        setLoading(true)
+        try {
+            const response = await axios.get(APPOINTMENTS_BY_DATE+fecha, { headers })
+            setAppointments(response.data)
+        } catch (error) {
+            setToast({
+                message: error.response?.data.message || error.message,
+                tipoToast: tipoToast.ERROR
+            })
+        }
+        setLoading(false)
+    }
     React.useEffect(() => {
-        const getAppointments = async() => {
+        /* const getAppointments = async() => {
             let fecha = getStringDate(date);
             //console.log('fecha:');
             // console.log(fecha);
@@ -53,6 +80,7 @@ const Citas = () => {
             try {
                 const response = await axios.get(APPOINTMENTS_BY_DATE+fecha, { headers })
                 setAppointments(response.data)
+                console.log('ejecutado');
             } catch (error) {
                 setToast({
                     message: error.response?.data.message || error.message,
@@ -60,7 +88,7 @@ const Citas = () => {
                 })
             }
             setLoading(false)
-        }
+        } */
         getAppointments()
     }, [date, token, setToast, tipoToast.ERROR])
 
@@ -80,11 +108,15 @@ const Citas = () => {
                 {
                     appointment.map((item, index)=>{
                         return <Asignaciones 
+                            key={item.id}
                             id= {item.id}
                             nombre= {item.client.name}
                             hora={item.time}
                             telefono={item.client.phoneNumber}
-                            servicios={item.serviceList} />
+                            servicios={item.serviceList} 
+                            enabled = {item.enabled}
+                            cambio = {cambioAsignaciones}
+                            />
                     })
                 }
                 

@@ -103,19 +103,25 @@ const FormUI = ({ form ,
                         <label className="form-check-label" htmlFor={i.name}>{i.placeholder}</label>
                     </div>
                     : i.type === 'select'
-                    ? <Typeahead
-                        id="selections-example"
-                        labelKey="name"
-                        onChange={text => { setValue(i.name, i.multiple ? text.map(t => t.id): text.pop().id); }}
-                        multiple={i.multiple ? true : false}
-                        options={dataSelect[i.name] || []}
-                        placeholder={i.placeholder}
-                    />
-                    : <input className="form-control p-3 border-maroon"
-                        style={{boxShadow: errors[i.name] && ' 0 0 0 0.25rem lightcoral'}} 
-                        placeholder={i.placeholder}
-                        type={i.type}
-                        {...register(i.name, i.options)}/>
+                    ? <>
+                        {i.label && <label>{i.label}</label>}
+                        <Typeahead
+                            id="selections-example"
+                            labelKey="name"
+                            onChange={text => { setValue(i.name, i.multiple ? text.map(t => t.id): text.pop().id); }}
+                            multiple={i.multiple ? true : false}
+                            options={dataSelect[i.name] || []}
+                            placeholder={i.placeholder}
+                        />
+                    </>
+                    :   <>
+                            {i.label && <label>{i.label}</label>}
+                            <input className="form-control p-3 border-maroon"
+                            style={{boxShadow: errors[i.name] && ' 0 0 0 0.25rem lightcoral'}} 
+                            placeholder={i.placeholder}
+                            type={i.type}
+                            {...register(i.name, i.options)}/>
+                        </>
                     }
                     {i.format && <IsolateReRender defaultValue={i.options.value} format={i.format} name={i.name} control={control} />}
                 </div>
