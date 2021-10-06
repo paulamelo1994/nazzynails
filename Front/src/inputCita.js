@@ -1,6 +1,6 @@
 import { API } from './ApiProvider'
 const formCita = [{
-        name: 'nombreCliente',
+        name: 'clientId',
         type: 'select',
         placeholder: 'Seleccione cliente',
         url: API.CLIENTS,
@@ -22,7 +22,7 @@ const formCita = [{
         options: {}
     },
     {
-        name: 'servicios',
+        name: 'serviceList',
         placeholder: 'servicio',
         type: 'select',
         url: API.SERVICES,

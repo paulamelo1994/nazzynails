@@ -18,6 +18,11 @@ const Citas = () => {
     const [appointment, setAppointments] = React.useState([])
     // const [change, setChange] = React.useState(0)
 
+    
+
+
+
+
     const getStringDate = (date, event)=>{
         let dateString ='';
         if(date !== undefined && date !== null){

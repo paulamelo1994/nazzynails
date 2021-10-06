@@ -35,9 +35,9 @@ const ServiceList = () => {
     if(loading){
         return <Loader />
     }
-
     return <ul className="d-flex p-0 row">
         {
+            
             services.map(s => <ServiceCard key={s.id}
                 nombre={s.name}
                 precio={s.price}
