@@ -66,7 +66,7 @@ const Citas = () => {
         setLoading(false)
     }
     React.useEffect(() => {
-        /* const getAppointments = async() => {
+        const getAppointments = async() => {
             let fecha = getStringDate(date);
             //console.log('fecha:');
             // console.log(fecha);
@@ -86,7 +86,7 @@ const Citas = () => {
                 })
             }
             setLoading(false)
-        } */
+        }
         getAppointments()
     }, [date, token, setToast, tipoToast.ERROR])
 

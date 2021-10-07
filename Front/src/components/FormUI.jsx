@@ -21,10 +21,12 @@ const FormUI = ({ form ,
     endpoint, 
     submit, 
     messageSubmit,
-    title
+    title,
+    processData
 }) => {
     const [dataForm] = React.useState(form || [])
     const [dataSelect, setDataSelect] = React.useState({})
+    const [selected, setSelected] = React.useState({})
     const [loading, setLoading] = React.useState(false)
     const { token, setToast, tipoToast } = React.useContext(AppContext)
     const {
@@ -48,7 +50,7 @@ const FormUI = ({ form ,
     }
     
     React.useEffect(() => {
-        const getOptions = async (url, prop, name) => {
+        const getOptions = async (url, prop, name, value) => {
             const headers = {
                 Authorization: `Bearer ${token}`
             }  
@@ -56,25 +58,36 @@ const FormUI = ({ form ,
             try {
                     const response = await axios.get(url, { headers })
                     setDataSelect(d => ({...d, [name] : response.data.map(data => ({id: data.id, name:data[prop]}))}))
-                    // console.log(form);
-                    // console.log('setDataSelect',dataSelect)
+                    setValue(name, value)
+                    setSelected(d => ({...d, [name] : value}))
                 } catch (error) {
+                    console.log(error)
                     setDataSelect(d => ({...d, [name] : [[]]}))
+                    setSelected(d => ({...d, [name] : []}))
+                    setValue(name, [])
                     setToast({ 
                         message: error.response?.data.message || error.message,
                         tipo: tipoToast.ERROR
                     })
                 }
                 
-            setLoading(false)
-        }
-        const selects = dataForm.filter((i) => i.type === 'select')
-        selects.forEach(async (i) => await getOptions(i.url, i.prop, i.name)) 
-    }, [token, setToast, tipoToast.ERROR, dataForm])
+                setLoading(false)
+            }
+            const selects = dataForm.filter((i) => i.type === 'select')
+            selects.forEach(async (i) => {
+                await getOptions(i.url, i.prop, i.name, i.options.value)
+        }) 
+    }, [token, setToast, tipoToast.ERROR, dataForm, setDataSelect, setValue])
 
     const onSubmit = async data => {
+        if(Object.values(data).includes(undefined)){
+            return
+        }
         setLoading(true)
         try {
+            if (processData){
+                data = processData(data)
+            }
             const response = await endpoint(data)
             setToast({ 
                 message: response.data.message || messageSubmit, 
@@ -90,56 +103,10 @@ const FormUI = ({ form ,
         setLoading(false)
     }
 
-    const processParams=(items,name)=>{
-        let params = [];
-        items.forEach((item,index) =>{
-            if(item.hasOwnProperty('options')){
-                if(item.name == name){
-                    // multiples
-                    if(Array.isArray(item.options.value)){
-                        item.options.value.forEach(item=>{
-                            params.push({
-                                id:item.id,
-                                name: item.name
-                            })
-                        })
-                        return item.options.value;
-                    }else{ // selects
-                        params.push({
-                            id: item.options.value.id, 
-                            name: item.options.value.name
-                        });
-                        console.log(onSubmit)
-                    }
-                }
-            }
-        })
-        // console.log('params',params);
-        return params;
-        // return [{id: 1, name: "Daniela Angulo"}]
-    }
-
-    const dateTimeFormatForFormUI = (form,name)=>{ 
-        form.forEach(item=>{
-            if(item.hasOwnProperty('options')){
-                if(item.name == name){
-                    let d = new Date(item.options.value);
-                    let min = d.getMinutes() <=9 ? '0'+d.getMinutes() : d.getMinutes();
-                    let hrs = d.getHours() <=9 ? '0'+d.getHours() : d.getHours();
-                    let day = d.getDate() <=9 ? '0'+d.getDate() : d.getDate();
-                    let mon = d.getMonth()+1 <=9 ? '0'+d.getMonth()+1 : d.getMonth()+1;
-
-                    let str = day+'/'+mon+'/'+d.getFullYear()+', '+hrs+'/'+min;
-                    return str;
-                }
-            }
-        })
-    }
-
     if(loading){
         return <Loader />
     }
-    const selected = null;
+
     return <form className="form" onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <h2 className="mb-4">{title}</h2>
         { dataForm.map((i, key) => {
@@ -153,30 +120,30 @@ const FormUI = ({ form ,
                         <label className="form-check-label" htmlFor={i.name}>{i.placeholder}</label>
                     </div>
                     : i.type === 'select'
-                    ? <>
+                    ? <div>
                         {i.label && <label>{i.label}</label>}
                         <Typeahead
                             id="selections-example"
                             labelKey="name"
-                            onChange={text => { setValue(i.name, i.multiple ? text.map(t => t.id): text.pop().id); }}
                             multiple={i.multiple ? true : false}
                             options={dataSelect[i.name] || []}
                             placeholder={i.placeholder}
-                            defaultSelected={ // [{id: 1, name: "Daniela Angulo"}]
-
-                                processParams(form,i.name)
-                                
-                            }
-                            
+                            onChange={text => {
+                                setValue(i.name, text)
+                                setSelected(d => ({...d, [i.name]:text}))
+                            }}
+                            selected={selected[i.name]}
                         />
-                    </>
+                        {selected[i.name]===undefined && <small className="">
+                            <i className="bi bi-exclamation-circle-fill"></i> Tienes que elegir uno
+                        </small>}
+                    </div>
                     :   <>
                             {i.label && <label>{i.label}</label>}
                             <input className="form-control p-3 border-maroon"
                             style={{boxShadow: errors[i.name] && ' 0 0 0 0.25rem lightcoral'}} 
                             placeholder={i.placeholder}
                             type={i.type}
-                            value = {i.type == 'datetime-local' && dateTimeFormatForFormUI(form,i.name)}
                             {...register(i.name, i.options)}/>
                         </>
                     }

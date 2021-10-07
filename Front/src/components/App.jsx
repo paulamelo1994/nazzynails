@@ -15,7 +15,7 @@ import { Form } from './Form';
 import { ClienteList } from './ClienteList';
 import { ServiceList } from './ServiceList';
 import { Toast } from './Toast';
-import { formCita } from '../inputCita';
+import { formCita, processData, processGetData } from '../inputCita';
 import Reportes from './Reportes';
 
 const App = () => {
@@ -68,6 +68,8 @@ const App = () => {
           title="Cita"
           history={history} 
           form={formCita}
+          processData={processData}
+          processGetData={processGetData}
           pathNew={APPOINTMENTS_NEW}
           pathUpdate={APPOINTMENTS}
           funcion = {

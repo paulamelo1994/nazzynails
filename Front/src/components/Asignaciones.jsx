@@ -95,7 +95,7 @@ const Asignaciones = (props)=>{
                 <h1>Servicios</h1>
                 {
                     props.servicios.map((item, index) => {
-                    return(<p><span className="Asignaciones__servicios-icon"><img alt="asd" src={esmalte}/></span> {item.name}</p>)
+                    return(<p key={index}><span className="Asignaciones__servicios-icon"><img alt="asd" src={esmalte}/></span> {item.name}</p>)
                        
                     }) 
                 }   

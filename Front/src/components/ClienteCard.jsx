@@ -28,12 +28,12 @@ const ClienteCard = ({ nombre, telefono, id }) => {
                 link={`clientes/form?id=${id}`}
                 />
         </div>
-        <h5 className="text-center mt-1 mb-1 p-1"><strong>Último(s) servicio(s)</strong></h5>
+        {/* <h5 className="text-center mt-1 mb-1 p-1"><strong>Último(s) servicio(s)</strong></h5>
         <ul className="list-group">
             <span>Servicio 1</span>
             <span>Servicio 2</span>
             <span>Servicio 3</span>
-        </ul>
+        </ul> */}
     </section> 
 }
 
