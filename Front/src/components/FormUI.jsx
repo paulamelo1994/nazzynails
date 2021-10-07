@@ -119,7 +119,7 @@ const FormUI = ({ form ,
         // return [{id: 1, name: "Daniela Angulo"}]
     }
 
-    const dateTimeFormatForFormUI = (form,name)=>{ console.log('lo que sea*****')
+    const dateTimeFormatForFormUI = (form,name)=>{ 
         form.forEach(item=>{
             if(item.hasOwnProperty('options')){
                 if(item.name == name){

@@ -49,8 +49,6 @@ const Citas = () => {
     }
     const getAppointments = async() => {
         let fecha = getStringDate(date);
-        //console.log('fecha:');
-        // console.log(fecha);
         const { APPOINTMENTS_BY_DATE } = API
         const headers = {
             Authorization: `Bearer ${token}`
