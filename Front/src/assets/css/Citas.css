@@ -81,6 +81,17 @@ p#telefono a {
   margin-right: 10px;
 }
 
+.Asignaciones__advice {
+  display: flex;
+  width: 100%;
+  padding: 5px;
+  justify-content: center;
+  color: var(--secondary-color);
+  background: lemonchiffon;
+}
+
+/*Estilos modificados del calendario*/
+
 .react-calendar {
   border: none;
 }

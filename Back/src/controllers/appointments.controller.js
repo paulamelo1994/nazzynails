@@ -76,8 +76,6 @@ function getAll(req, res, next) {
 
 function getAllbyDate(req, res, next) {
     var data = [];
-    console.log("esto es lo que imprime")
-    console.log(req.query.date);
     appointmentService.getAllbyDate(req.user, req.query.date)
     .then(appointments => {
         for (appointment of appointments) {
@@ -101,7 +99,8 @@ function getAllbyDate(req, res, next) {
                 "client": client,
                 "time": appointment.time,
                 "serviceList": serviceList,
-                "enabled" : appointment.enabled
+                "enabled" : appointment.enabled,
+                "appointmentIsDone": appointment.appointmentIsDone
             })
         };
         res.json(data);
@@ -129,7 +128,7 @@ function updateSchema(req, res, next) {
 }
 
 function update(req, res, next) {
-    appointmentService.update(req.user, req.params.id, req.body)
+    appointmentService.update(req.user, parseInt(req.params.id), req.body)
         .then(appointment => res.json(appointment))
         .catch(next);
 }

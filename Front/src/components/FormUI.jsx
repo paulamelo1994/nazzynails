@@ -93,29 +93,47 @@ const FormUI = ({ form ,
     const processParams=(items,name)=>{
         let params = [];
         items.forEach((item,index) =>{
-            if(item.name == name){
-                // multiples
-                if(Array.isArray(item.options.value)){
-                    item.options.value.forEach(item=>{
-                        params.push({
-                            id:item.id,
-                            name: item.name
+            if(item.hasOwnProperty('options')){
+                if(item.name == name){
+                    // multiples
+                    if(Array.isArray(item.options.value)){
+                        item.options.value.forEach(item=>{
+                            params.push({
+                                id:item.id,
+                                name: item.name
+                            })
                         })
-                    })
-                    return item.options.value;
-                }else{ // selects
-                    params.push({
-                        id: item.options.value.id, 
-                        name: item.options.value.name
-                    });
+                        return item.options.value;
+                    }else{ // selects
+                        params.push({
+                            id: item.options.value.id, 
+                            name: item.options.value.name
+                        });
+                        console.log(onSubmit)
+                    }
                 }
             }
         })
         // console.log('params',params);
         return params;
         // return [{id: 1, name: "Daniela Angulo"}]
-        
-        
+    }
+
+    const dateTimeFormatForFormUI = (form,name)=>{ console.log('lo que sea*****')
+        form.forEach(item=>{
+            if(item.hasOwnProperty('options')){
+                if(item.name == name){
+                    let d = new Date(item.options.value);
+                    let min = d.getMinutes() <=9 ? '0'+d.getMinutes() : d.getMinutes();
+                    let hrs = d.getHours() <=9 ? '0'+d.getHours() : d.getHours();
+                    let day = d.getDate() <=9 ? '0'+d.getDate() : d.getDate();
+                    let mon = d.getMonth()+1 <=9 ? '0'+d.getMonth()+1 : d.getMonth()+1;
+
+                    let str = day+'/'+mon+'/'+d.getFullYear()+', '+hrs+'/'+min;
+                    return str;
+                }
+            }
+        })
     }
 
     if(loading){
@@ -158,6 +176,7 @@ const FormUI = ({ form ,
                             style={{boxShadow: errors[i.name] && ' 0 0 0 0.25rem lightcoral'}} 
                             placeholder={i.placeholder}
                             type={i.type}
+                            value = {i.type == 'datetime-local' && dateTimeFormatForFormUI(form,i.name)}
                             {...register(i.name, i.options)}/>
                         </>
                     }

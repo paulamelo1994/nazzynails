@@ -111,11 +111,13 @@ const Citas = () => {
                             key={item.id}
                             id= {item.id}
                             nombre= {item.client.name}
+                            clientId= {item.client.id}
                             hora={item.time}
                             telefono={item.client.phoneNumber}
                             servicios={item.serviceList} 
                             enabled = {item.enabled}
                             cambio = {cambioAsignaciones}
+                            appointmentIsDone = {item.appointmentIsDone}
                             />
                     })
                 }

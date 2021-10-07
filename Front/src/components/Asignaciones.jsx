@@ -39,6 +39,49 @@ const Asignaciones = (props)=>{
             })
         }
     }
+
+    const citaCumplida = async(id)=>{
+        let arrayServices = [];
+
+        props.servicios.map(servicio=>{
+            arrayServices.push(servicio.id);
+        })
+
+        let data = {
+            clientId: props.clientId,
+            time: props.hora,
+            serviceList: arrayServices,
+            appointmentIsDone: true,
+            enabled: props.enabled
+        }
+
+        const { APPOINTMENTS } = API
+        const headers = {
+            Authorization: `Bearer ${token}`
+        }
+        try {
+            const response = await axios.put(APPOINTMENTS+id,data ,{ headers })
+            props.cambio();
+        } catch (error) {
+            setToast({
+                message: error.response?.data.message || error.message,
+                tipoToast: tipoToast.ERROR
+            })
+        }
+    }
+
+    const totalServicios = ()=>{
+        let total = 0;
+        props.servicios.map(servicio=>{
+            total += servicio.price
+        })
+        let formatCurrency = new Intl.NumberFormat('es-CO', {
+            style: 'currency',
+            currency: 'COP',
+            minimumFractionDigits: 0
+        });
+        return formatCurrency.format(total);
+    }
     
     return (
         <div className="Asignaciones__card" key={props.id}>
@@ -59,20 +102,27 @@ const Asignaciones = (props)=>{
             </div>
             </div>
             <div className="Asignaciones__card-buttons">
-                {props.enabled === true && (
+                {props.enabled && !props.appointmentIsDone && (
                     <React.Fragment>
                         <button onClick={()=>{delete_appointment(props.id)}}><i className="bi bi-x-lg"></i>Cancelar</button>
                         <Link to={`citas/form?id=${props.id}`} className="button-asignaciones">
                             <button><i className="bi bi-pencil-fill"></i>Actualizar</button>
                         </Link>
-                        <button><i className="bi bi-check2"></i>Cumplida</button>
+                        <button onClick={()=>{citaCumplida(props.id)}}><i className="bi bi-check2"></i>Cumplida</button>
                     </React.Fragment>
-                )
-                }
-                {props.enabled===false && (
-                        <span>Cita cancelada</span>
+
                     )
                 }
+                {props.appointmentIsDone && (
+                    <h5 className="Asignaciones__advice">Cita completada:  <b>{totalServicios()}</b></h5>
+                )
+                    
+                }
+                {!props.enabled && (
+                        <h5 className="Asignaciones__advice">Cita cancelada</h5>
+                    )
+                }
+                
                 
 
             </div>
