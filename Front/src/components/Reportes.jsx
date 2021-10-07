@@ -109,10 +109,10 @@ const Reportes = ()=>{
                 <h3 className="Reportes__tarjeta-titulo">Citas completadas hoy</h3>
                 <div className="Reportes__tarjeta-cantidad"> {state.cantidad}</div>
             </div>
-            <div className="Reportes__tarjeta">
+            {/*<div className="Reportes__tarjeta">
                 <h3 className="Reportes__tarjeta-titulo">Reporte Semanal</h3>
                 <div className="Reportes__semana-total"><p>Total: $1000000</p></div>
-            </div>
+    </div>*/}
             <div className="Reportes__tarjeta">
                 <h3 className="Reportes__tarjeta-titulo">Reporte Mensual</h3>
                 <form className="Reportes__form">
