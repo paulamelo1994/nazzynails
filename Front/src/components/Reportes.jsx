@@ -5,6 +5,7 @@ import axios from 'axios'
 import { AppContext } from '../AppContext' 
 
 import '../assets/css/Reportes.css';
+import { toFormat } from '../InputServicio';
 
 const Reportes = ()=>{
     const { token, setToast, tipoToast } = React.useContext(AppContext)
@@ -13,17 +14,6 @@ const Reportes = ()=>{
         ganancias: null
     })
     
-
-    let date = new Date();
-
-
-
-    let formatCurrency = new Intl.NumberFormat('es-CO', {
-        style: 'currency',
-        currency: 'COP',
-        minimumFractionDigits: 0
-    });
-
     const getStringDate = (date)=>{
         let dateString ='';
         if(date !== undefined && date !== null){
@@ -41,44 +31,48 @@ const Reportes = ()=>{
        return dateString;
     }
 
-    const getAppointments = async() => {
-        let fecha = getStringDate(date);
-        const { APPOINTMENTS_BY_DATE } = API
-        const headers = {
-            Authorization: `Bearer ${token}`
-        }
-        try {
-            const response = await axios.get(APPOINTMENTS_BY_DATE+fecha, { headers })
-            let cantidad = 0;
-            let ganancia = 0;
-            response.data.map(cita=>{
-                
-                if(cita.appointmentIsDone){
-                    cantidad ++;
-   
-                    cita.serviceList.map(servicio=>{
-                        ganancia += servicio.price;
-                    })     
-                }
-            } )
-
-
-            setState({
-                cantidad,
-                ganancias: formatCurrency.format(ganancia)
-            })
-            return response.data;  
-                     
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-
-   
+    
+    
+    
     React.useEffect(() => {
+        const getAppointments = async() => {
+            let date = new Date();
+            let fecha = getStringDate(date);
+            const { APPOINTMENTS_BY_DATE } = API
+            const headers = {
+                Authorization: `Bearer ${token}`
+            }
+            try {
+                const response = await axios.get(APPOINTMENTS_BY_DATE+fecha, { headers })
+                let cantidad = 0;
+                let ganancia = 0;
+                response.data.forEach(cita=>{
+                    
+                    if(cita.appointmentIsDone){
+                        cantidad ++;
+       
+                        cita.serviceList.forEach(servicio=>{
+                            ganancia += servicio.price;
+                        })     
+                    }
+                } )
+    
+    
+                setState({
+                    cantidad,
+                    ganancias: toFormat(ganancia)
+                })
+                return response.data;  
+                         
+            } catch (error) {
+                setToast({
+                    message: error.response?.data.message || error.message,
+                    tipoToast: tipoToast.ERROR
+                })
+            }
+        }
         getAppointments();
-    },[token])
+    },[token, setToast, tipoToast.ERROR])
 
 
     

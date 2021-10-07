@@ -1,7 +1,9 @@
 const toFormat = (number) => {
     const formatter = new Intl.NumberFormat("en-ES", {
         style: "currency",
-        currency: "USD"
+        currency: "USD",
+        maximumFractionDigits: 0,
+        minimumFractionDigits: 0
     });
     if (number < 0) {
         number = 0

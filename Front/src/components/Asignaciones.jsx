@@ -3,7 +3,7 @@ import axios from 'axios'
 import { API } from '../ApiProvider'
 import { AppContext } from '../AppContext'
 import { Link } from "react-router-dom";
-
+import { toFormat } from "../InputServicio";
 
 import esmalte from '../assets/icons/botella-esmalte.svg'
 
@@ -30,7 +30,7 @@ const Asignaciones = (props)=>{
             Authorization: `Bearer ${token}`
         }
         try {
-            const response = await axios.delete(APPOINTMENTS+id, { headers })
+            await axios.delete(APPOINTMENTS+id, { headers })
             props.cambio();
         } catch (error) {
             setToast({
@@ -43,9 +43,7 @@ const Asignaciones = (props)=>{
     const citaCumplida = async(id)=>{
         let arrayServices = [];
 
-        props.servicios.map(servicio=>{
-            arrayServices.push(servicio.id);
-        })
+        props.servicios.map(servicio=> arrayServices.push(servicio.id))
 
         let data = {
             clientId: props.clientId,
@@ -60,7 +58,7 @@ const Asignaciones = (props)=>{
             Authorization: `Bearer ${token}`
         }
         try {
-            const response = await axios.put(APPOINTMENTS+id,data ,{ headers })
+            await axios.put(APPOINTMENTS+id,data ,{ headers })
             props.cambio();
         } catch (error) {
             setToast({
@@ -72,15 +70,10 @@ const Asignaciones = (props)=>{
 
     const totalServicios = ()=>{
         let total = 0;
-        props.servicios.map(servicio=>{
+        props.servicios.forEach(servicio=>{
             total += servicio.price
         })
-        let formatCurrency = new Intl.NumberFormat('es-CO', {
-            style: 'currency',
-            currency: 'COP',
-            minimumFractionDigits: 0
-        });
-        return formatCurrency.format(total);
+        return toFormat(total);
     }
     
     return (
