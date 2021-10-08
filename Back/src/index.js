@@ -21,6 +21,7 @@ app.use(errorHandler);
 
 const server = app.listen(
     PORT,
+    '0.0.0.0',
     () => console.log('Server started at port ', PORT))
 
 module.exports = server
