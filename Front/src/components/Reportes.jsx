@@ -6,12 +6,15 @@ import { AppContext } from '../AppContext'
 
 import '../assets/css/Reportes.css';
 import { toFormat } from '../InputServicio';
+import { Loader } from './Loader';
 
 const Reportes = ()=>{
     const { token, setToast, tipoToast } = React.useContext(AppContext)
+    const [date, setDate] = React.useState(new Date())
+    const [loading, setLoading] = React.useState(false)
     const [state, setState] = React.useState({
-        cantidad: null,
-        ganancias: null
+        cantidad: 0,
+        ganancias: 0
     })
     
     const getStringDate = (date)=>{
@@ -31,12 +34,42 @@ const Reportes = ()=>{
        return dateString;
     }
 
-    
+    const getReport = async () => {
+        const { REPORTS } = API
+            const headers = {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/pdf'
+            }
+            setLoading(true)
+            try {
+                const response = await axios.post(REPORTS, { date }, {
+                    responseType: "arraybuffer",
+                    headers
+                })
+                console.log(response)
+                const file = new Blob([response.data], {
+                    type: "application/pdf"
+                  });
+                console.log(file)
+                const url = window.URL.createObjectURL(file);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = "Reporte" + new Date() + ".pdf";
+                link.click();
+                
+            } catch (error) {
+                console.log(error)
+                setToast({
+                    message: error.response?.data.message || error.message,
+                    tipoToast: tipoToast.ERROR
+                })
+            }
+            setLoading(false)
+    }
     
     
     React.useEffect(() => {
         const getAppointments = async() => {
-            let date = new Date();
             let fecha = getStringDate(date);
             const { APPOINTMENTS_BY_DATE } = API
             const headers = {
@@ -118,7 +151,9 @@ const Reportes = ()=>{
                         <option value="">Año</option>
                     </select>
                     </div>
-                    <button className="Reportes__form-button"><i className="bi bi-download"></i> Descargar</button>
+                    <button type="button" className="Reportes__form-button" onClick={getReport}><i className="bi bi-download"></i> Descargar
+                    {loading && <Loader />}
+                    </button>
                 </form>
             </div>
         </div>

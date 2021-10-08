@@ -1,6 +1,6 @@
 require('dotenv').config({ path: '../.env' })
-const URL = process.env.API || 'http://localhost:5000/api'
-// const URL = process.env.API || 'http://192.168.10.17:5000/api'
+const URL = process.env.API || 'http://192.168.1.54:5000/api'
+    // const URL = process.env.API || 'http://192.168.10.17:5000/api'
 
 const API = {
     USERS: 'users/',
@@ -12,6 +12,8 @@ const API = {
     APPOINTMENTS: 'appointments/',
     APPOINTMENTS_NEW: 'appointments/create/',
     APPOINTMENTS_BY_DATE: 'appointments/date',
+    REPORTS: 'reports/generate',
+    REPORTS_WEEK: 'reports/generateWeek'
 }
 
 Object.keys(API).map(key => API[key] = `${URL}/${API[key]}`)
