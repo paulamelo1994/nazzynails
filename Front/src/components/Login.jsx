@@ -5,6 +5,7 @@ import { AppContext } from '../AppContext'
 import { API } from '../ApiProvider'
 import axios from 'axios'
 import { Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 const Login = () => {
     const [data, setData] = useState({
         username: '',
@@ -64,6 +65,7 @@ const Login = () => {
             <label className="form-check-label" htmlFor="session">Mantener mi sesión iniciada</label>
         </div>
         <button className="login__btn w-100" type="submit">{loading ? 'Enviando...' : 'Entrar'}</button>
+        <Link to='/register'>Registrarme</Link>
     </form>
 }
 

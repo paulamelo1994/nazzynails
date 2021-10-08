@@ -6,6 +6,7 @@ import { AppContext } from '../AppContext'
 import { API } from '../ApiProvider';
 import { formClient } from '../InputCliente';
 import { formServicio } from '../InputServicio';
+import { formRegister } from '../InputRegister';
 
 import { Login } from './Login'
 import { Navbar } from './Navbar';
@@ -19,11 +20,20 @@ import { formCita, processData, processGetData } from '../inputCita';
 import Reportes from './Reportes';
 
 const App = () => {
-  const { CLIENTS, CLIENTS_NEW, SERVICES, SERVICES_NEW, APPOINTMENTS, APPOINTMENTS_NEW } = API
+  const { 
+    CLIENTS, 
+    CLIENTS_NEW, 
+    SERVICES, 
+    SERVICES_NEW, 
+    APPOINTMENTS, 
+    APPOINTMENTS_NEW, 
+    USERS_CREATE 
+  } = API
   const location = useLocation()
   const history = useHistory()
   const { token, toast } = React.useContext(AppContext)
   const loginPath = location.pathname === '/login'
+  const registerPath = location.pathname === '/register'
   const labels = {
     '/': 'Mis Citas',
     '/citas/form':'Nueva Cita', //paula funcionando
@@ -32,6 +42,7 @@ const App = () => {
     '/clientes/form': 'Cliente',
     '/servicios': 'Mis Servicios'
   }
+  const [date, setDate] = React.useState(new Date());
   
   const Header = () => (
     <header className="header" href="#">
@@ -45,15 +56,25 @@ const App = () => {
     paddingBottom: !loginPath && '35%'
   }}>
     {toast.message && <Toast />}
-    {!loginPath && <Header />}
-    {!loginPath && <Navbar />}
+    {!loginPath  && <Header />}
+    {token && <Navbar />}
     <div className="container" >
       <Switch>
         <Route exact path='/login'>
           <Login />
         </Route>
+        <Route exact path='/register'>
+        <Form
+          title="Usuario"
+          history={history} 
+          form={formRegister}
+          pathNew={USERS_CREATE}
+          pathUpdate={USERS_CREATE}
+          />
+        </Route>
+        { token && <React.Fragment> 
         <Route exact path='/'>
-          <Citas />
+          <Citas date={date} setDate={setDate} />
           <ButtonAction link='/citas/form' 
           style={{
             position: 'fixed', 
@@ -65,18 +86,13 @@ const App = () => {
         </Route>
         <Route exact path='/citas/form'>
           <Form
-          title="Cita"
+          title={date.toLocaleDateString()}
           history={history} 
           form={formCita}
-          processData={processData}
+          processData={(data) => processData({...data, date})}
           processGetData={processGetData}
           pathNew={APPOINTMENTS_NEW}
           pathUpdate={APPOINTMENTS}
-          funcion = {
-            ()=>{
-              console.log("funcion")
-            }
-          }
           />
         </Route>
         <Route exact path='/reportes'>
@@ -119,10 +135,12 @@ const App = () => {
           form={formServicio}
           pathNew={SERVICES_NEW}
           pathUpdate={SERVICES}/>
-        </Route>
+        </Route> 
+        </React.Fragment>
+        }
       </Switch>
+      { !token && (!registerPath) && <Redirect to='/login'/> }
     </div>
-    { !token && <Redirect to="/login" />}
   </div>
 }
 

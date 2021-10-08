@@ -11,7 +11,7 @@ const Form = ({ history, form, pathNew, pathUpdate, title, processData, processG
     const [loading, setLoading] = React.useState(id!==null)
     const { token, setToast, tipoToast} = React.useContext(AppContext)
     const headers = {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${token || 'token'}`
     }  
     
     React.useEffect(()=> {
@@ -34,7 +34,7 @@ const Form = ({ history, form, pathNew, pathUpdate, title, processData, processG
                         }
                     })
                 }             
-                console.log(formUpdate)
+                console.log('----------',formUpdate)
                 setFormUpdate(formUpdate)
             } catch (error) {
                 console.log(error)
@@ -62,14 +62,14 @@ const Form = ({ history, form, pathNew, pathUpdate, title, processData, processG
     processData={processData}
     messageSubmit={`${title} Actualizado`}
     goBack={history.goBack} 
-    endpoint={(data) => axios.put(pathUpdate + id , data, { headers }) }/> 
+    endpoint={async (data) => await axios.put(pathUpdate + id , data, { headers }) }/> 
     : <FormUI form={ form }
     title={`Crear ${title}`}
     submit='Crear' 
     processData={processData}
     messageSubmit='Creado Exitosamente'
     goBack={history.goBack}
-    endpoint={(data) => axios.post(pathNew, data, { headers }) }/> 
+    endpoint={async (data) => await axios.post(pathNew, data, { headers })}/> 
 }
 
 export { Form }

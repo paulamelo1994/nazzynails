@@ -8,9 +8,26 @@ import '../assets/css/Reportes.css';
 import { toFormat } from '../InputServicio';
 import { Loader } from './Loader';
 
+const months = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+]
+
 const Reportes = ()=>{
     const { token, setToast, tipoToast } = React.useContext(AppContext)
-    const [date, setDate] = React.useState(new Date())
+    const [date] = React.useState(new Date())
+    const [month, setMonth] = React.useState()
+    const [year, setYear] = React.useState()
     const [loading, setLoading] = React.useState(false)
     const [state, setState] = React.useState({
         cantidad: 0,
@@ -34,6 +51,17 @@ const Reportes = ()=>{
        return dateString;
     }
 
+    function generateArrayOfYears(start, end) {
+        var max = new Date().getFullYear() + end
+        var min = new Date().getFullYear() - start
+        var years = []
+      
+        for (var i = max; i >= min; i--) {
+          years.push(i)
+        }
+        return years
+      }
+
     const getReport = async () => {
         const { REPORTS } = API
             const headers = {
@@ -42,19 +70,20 @@ const Reportes = ()=>{
             }
             setLoading(true)
             try {
-                const response = await axios.post(REPORTS, { date }, {
+                let newDate = date
+                newDate.setMonth(month)
+                newDate.setFullYear(year)
+                const response = await axios.post(REPORTS, { date: newDate }, {
                     responseType: "arraybuffer",
                     headers
                 })
-                console.log(response)
                 const file = new Blob([response.data], {
                     type: "application/pdf"
-                  });
-                console.log(file)
+                });
                 const url = window.URL.createObjectURL(file);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = "Reporte" + new Date() + ".pdf";
+                link.download = "Reporte" + new Date().toLocaleDateString() + ".pdf";
                 link.click();
                 
             } catch (error) {
@@ -105,26 +134,7 @@ const Reportes = ()=>{
             }
         }
         getAppointments();
-    },[token, setToast, tipoToast.ERROR])
-
-
-    
-        
-    
-
-
-    // const totalServicios = ()=>{
-    //     let total = 0;
-    //     props.servicios.map(servicio=>{
-    //         total += servicio.price
-    //     })
-    //     let formatCurrency = new Intl.NumberFormat('es-CO', {
-    //         style: 'currency',
-    //         currency: 'COP',
-    //         minimumFractionDigits: 0
-    //     });
-    //     return formatCurrency.format(total);
-    // }
+    },[token, setToast, tipoToast.ERROR, date])
     
     return(
         <div className="Reportes__container">
@@ -144,11 +154,12 @@ const Reportes = ()=>{
                 <h3 className="Reportes__tarjeta-titulo">Reporte Mensual</h3>
                 <form className="Reportes__form">
                     <div className="Reportes__form-select">
-                    <select>
-                        <option value="">Mes</option>
+                    <select id="mes" onChange={(e) => setMonth(e.target.value)}>
+                        <option value="Mes" defaultValue disabled>Mes</option>
+                        {months.map((m, index)=> <option key={m} value={index}>{m}</option>)}
                     </select>
-                    <select>
-                        <option value="">Año</option>
+                    <select id="año" defaultValue={date.getFullYear()} onChange={(e) => setYear(e.target.value)}>
+                        {generateArrayOfYears(10, 10).map(y => <option key={y} value={y}>{y}</option>)}
                     </select>
                     </div>
                     <button type="button" className="Reportes__form-button" onClick={getReport}><i className="bi bi-download"></i> Descargar

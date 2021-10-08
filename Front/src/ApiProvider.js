@@ -4,6 +4,7 @@ const URL = process.env.API || 'http://192.168.1.54:5000/api'
 
 const API = {
     USERS: 'users/',
+    USERS_CREATE: 'users/register/',
     USERS_AUTH: 'users/authenticate/',
     CLIENTS: 'clients/',
     CLIENTS_NEW: 'clients/create/',

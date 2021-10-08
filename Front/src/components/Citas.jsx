@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Calendar from 'react-calendar';
 
 import axios from 'axios'
@@ -11,8 +11,7 @@ import 'react-calendar/dist/Calendar.css';
 import '../assets/css/Citas.css';
 import Asignaciones from './Asignaciones';
 
-const Citas = () => {
-    const [date, setDate]               = useState(new Date());
+const Citas = ({ date, setDate }) => {
     const [loading, setLoading]         = React.useState(false)
     const { token, setToast, tipoToast } = React.useContext(AppContext)
     const [appointment, setAppointments] = React.useState([])
