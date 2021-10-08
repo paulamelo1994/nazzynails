@@ -27,7 +27,7 @@ const Reportes = ()=>{
     const { token, setToast, tipoToast } = React.useContext(AppContext)
     const [date] = React.useState(new Date())
     const [month, setMonth] = React.useState()
-    const [year, setYear] = React.useState()
+    const [year, setYear] = React.useState(date.getFullYear())
     const [loading, setLoading] = React.useState(false)
     const [state, setState] = React.useState({
         cantidad: 0,
@@ -154,11 +154,11 @@ const Reportes = ()=>{
                 <h3 className="Reportes__tarjeta-titulo">Reporte Mensual</h3>
                 <form className="Reportes__form">
                     <div className="Reportes__form-select">
-                    <select id="mes" onChange={(e) => setMonth(e.target.value)}>
-                        <option value="Mes" defaultValue disabled>Mes</option>
+                    <select id="mes" defaultValue="Mes" onChange={(e) => setMonth(e.target.value)}>
+                        <option value="Mes" disabled>Mes</option>
                         {months.map((m, index)=> <option key={m} value={index}>{m}</option>)}
                     </select>
-                    <select id="año" defaultValue={date.getFullYear()} onChange={(e) => setYear(e.target.value)}>
+                    <select id="año" defaultValue={year} onChange={(e) => setYear(e.target.value)}>
                         {generateArrayOfYears(10, 10).map(y => <option key={y} value={y}>{y}</option>)}
                     </select>
                     </div>
